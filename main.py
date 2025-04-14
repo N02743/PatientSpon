@@ -20,7 +20,7 @@ def generate_timeline_data():
 
 
 def get_timeline_data():
-    # TODO: loading patient data
+    # TODO: loading timeline data
 
     # dummy data by random gen
     return generate_timeline_data()
@@ -28,6 +28,11 @@ def get_timeline_data():
 
 def plot_timeline():
     print()
+
+
+def get_patient_data():
+    # TODO: loading patient data
+    pass
 
 
 # def print_something(text):
@@ -61,7 +66,7 @@ app.state("zoomed")
 navFrame = Bar.NavFrame(app)
 
 banner = Bar.BannerFrame(navFrame)
-
+patient = Bar.PatientFrame(navFrame)
 
 # Content Frame
 contentFrame = Bar.ContentFrame(app)

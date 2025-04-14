@@ -25,6 +25,40 @@ class BannerFrame(tk.Frame):
         )
         Label.pack()
 
+        SubLabel = tk.Label(
+            self,
+            text="Yommarat Hospital",
+            bg="gray",
+        )
+        SubLabel.pack()
+
+
+class TextfieldInput(tk.Frame):
+    def __init__(self, parent, label):
+        super().__init__(parent)
+        self.pack(side="left")
+
+        tk.Label(self, text=label).pack(side="left")
+        tk.Entry(self).pack(side="left")
+
+
+class PatientFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.pack()
+
+        InfoList = ["HN", "AN", "Ward", "Bed", "Sex", "Name", "Age", "Phone Number"]
+
+        InfoTextField = []
+
+        for info in InfoList:
+            InfoTextField.append(
+                TextfieldInput(
+                    self,
+                    label=info,
+                ),
+            )
+
 
 class NavFrame(tk.Frame):
     def __init__(self, parent):

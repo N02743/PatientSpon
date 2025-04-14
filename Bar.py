@@ -2,6 +2,7 @@ import tkinter as tk
 
 import Color
 import Variable as Var
+import Widget
 
 
 class BannerFrame(tk.Frame):
@@ -33,15 +34,6 @@ class BannerFrame(tk.Frame):
         SubLabel.pack()
 
 
-class TextfieldInput(tk.Frame):
-    def __init__(self, parent, label):
-        super().__init__(parent)
-        self.pack(side="left")
-
-        tk.Label(self, text=label).pack(side="left")
-        tk.Entry(self).pack(side="left")
-
-
 class PatientFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -53,11 +45,45 @@ class PatientFrame(tk.Frame):
 
         for info in InfoList:
             InfoTextField.append(
-                TextfieldInput(
+                Widget.TextfieldInput(
                     self,
                     label=info,
                 ),
             )
+
+
+class ConfigButtonFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.pack(side="left")
+
+        showLabButton = Widget.ButtonInput(self, text="Show Lab test")
+        showMedButton = Widget.ButtonInput(self, text="Show Medication")
+        addLabButton = Widget.ButtonInput(self, text="Add new Lab test")
+        addMedButton = Widget.ButtonInput(self, text="Add new Medication")
+        timeTickButton = Widget.ButtonInput(self, text="Time tick")
+
+
+class ConfirmFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.pack(side="right")
+
+        confirmButton = Widget.ConfirmButton(self)
+        resetButton = Widget.ResetButton(self)
+
+
+class GraphConfigFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            padx=Var.graphConfig_padding,
+            pady=Var.graphConfig_padding,
+        )
+        self.pack(side="top", fill="x")
+
+        buttonFrame = ConfigButtonFrame(self)
+        confirmFrame = ConfirmFrame(self)
 
 
 class NavFrame(tk.Frame):

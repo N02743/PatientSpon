@@ -70,6 +70,6 @@ patient = Bar.PatientFrame(navFrame)
 
 # Content Frame
 contentFrame = Bar.ContentFrame(app)
-
+config = Bar.GraphConfigFrame(contentFrame)
 
 app.mainloop()

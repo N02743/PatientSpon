@@ -5,12 +5,15 @@ import Variable as Var
 
 
 class TextfieldInput(tk.Frame):
-    def __init__(self, parent, label):
+    def __init__(self, parent, label, info):
         super().__init__(parent)
         self.pack(side="left")
 
         tk.Label(self, text=label).pack(side="left")
-        tk.Entry(self).pack(side="left")
+        entry = tk.Entry(self)
+        entry.insert(0, info)
+        entry.config(state="disabled")
+        entry.pack(side="left")
 
 
 class ButtonInput(tk.Button):
@@ -22,7 +25,7 @@ class ButtonInput(tk.Button):
         )
         self.pack(
             side="left",
-            padx=Var.graphConfig_padding,
+            padx=Var.common_padding,
         )
 
 

@@ -1,6 +1,8 @@
 import tkinter as tk
 import random
 import Variable
+import pandas as pd
+import Class
 
 global PATIENT_DATA
 
@@ -31,8 +33,16 @@ def plot_timeline():
 
 
 def get_patient_data():
+    # TODO: send data from previous page
+
     # TODO: loading patient data
-    pass
+    patientCSV = pd.read_csv("PatientData.csv")
+
+    # dummy data
+    patient = patientCSV.iloc[0]
+    PT = Class.Patient(patientPD=patient)
+
+    return PT
 
 
 # def print_something(text):
@@ -44,7 +54,7 @@ app = tk.Tk()
 
 app.title("Patient Spon form program")
 
-print(PATIENT_DATA)
+# print(PATIENT_DATA)
 
 app.state("zoomed")
 
@@ -61,15 +71,22 @@ app.state("zoomed")
 #     )
 #     label.pack(expand=True)
 
+# TODO: patient data
+PT = get_patient_data()
 
 # Nav Frame
 navFrame = Bar.NavFrame(app)
 
 banner = Bar.BannerFrame(navFrame)
-patient = Bar.PatientFrame(navFrame)
+patient = Bar.PatientFrame(navFrame, PT=PT)
 
 # Content Frame
 contentFrame = Bar.ContentFrame(app)
+
 config = Bar.GraphConfigFrame(contentFrame)
+
+
+# TODO: graph show
+
 
 app.mainloop()

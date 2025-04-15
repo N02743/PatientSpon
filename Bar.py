@@ -35,19 +35,21 @@ class BannerFrame(tk.Frame):
 
 
 class PatientFrame(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, PT):
         super().__init__(parent)
         self.pack()
 
-        InfoList = ["HN", "AN", "Ward", "Bed", "Sex", "Name", "Age", "Phone Number"]
+        LabelList = ["HN", "AN", "Ward", "Bed", "Sex", "Name", "Age", "PhoneNumber"]
 
         InfoTextField = []
 
-        for info in InfoList:
+        for label in LabelList:
+            print(label, PT.Name, getattr(PT, label))
             InfoTextField.append(
                 Widget.TextfieldInput(
                     self,
-                    label=info,
+                    label=label,
+                    info=getattr(PT, label),
                 ),
             )
 
@@ -77,8 +79,8 @@ class GraphConfigFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(
             parent,
-            padx=Var.graphConfig_padding,
-            pady=Var.graphConfig_padding,
+            padx=Var.common_padding,
+            pady=Var.common_padding,
         )
         self.pack(side="top", fill="x")
 

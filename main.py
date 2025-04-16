@@ -12,11 +12,12 @@ import Bar
 
 
 def generate_timeline_data():
-    data = []
+    data = {}
 
-    for i in range(20):
+    for i in range(5):
         x = random.randint(1, 30)
-        data.append([f"drug {i}", x, random.randint(1, 31 - x) + x])
+        # data.append([f"drug {i}": x, random.randint(1, 31 - x) + x])
+        data[f"drug {i}"] = [x, random.randint(1, 31 - x) + x]
 
     return data
 
@@ -48,7 +49,7 @@ def get_patient_data():
 # def print_something(text):
 #     print(text)
 
-PATIENT_DATA = get_timeline_data()
+TL = get_timeline_data()
 
 app = tk.Tk()
 
@@ -87,6 +88,6 @@ config = Bar.GraphConfigFrame(contentFrame)
 
 
 # TODO: graph show
-
+labTest = Bar.LabTestFrame(contentFrame, TL)
 
 app.mainloop()

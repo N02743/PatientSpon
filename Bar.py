@@ -44,7 +44,7 @@ class PatientFrame(tk.Frame):
         InfoTextField = []
 
         for label in LabelList:
-            print(label, PT.Name, getattr(PT, label))
+            # print(label, getattr(PT, label))
             InfoTextField.append(
                 Widget.TextfieldInput(
                     self,
@@ -113,3 +113,42 @@ class ContentFrame(tk.Frame):
             expand=True,
             fill="both",
         )
+
+
+class LabTestFrame(tk.Frame):
+    def __init__(self, parent, drugsTL):
+        super().__init__(parent)
+        self.pack()
+        # TODO: UX/UI
+
+        # print(drugsTL)
+
+        canvas = {}
+        for i, drug in enumerate(drugsTL.keys()):
+            print(drug)
+
+            tk.Label(
+                self,
+                # text="Lab Test",
+                text=drug,
+            ).grid(
+                row=i,
+                column=0,
+                padx=5,
+                pady=5,
+            )
+
+            canvas[drug] = tk.Canvas(
+                self,
+                width=700,
+                height=30,
+                bg="white",
+            )
+            canvas[drug].grid(
+                row=i,
+                column=1,
+                padx=5,
+                pady=5,
+            )
+
+            canvas[drug].create_rectangle(200, 5, 400, 25, fill="skyblue")

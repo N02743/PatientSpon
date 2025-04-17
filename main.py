@@ -87,7 +87,25 @@ contentFrame = Bar.ContentFrame(app)
 config = Bar.GraphConfigFrame(contentFrame)
 
 
+date_range = ["1 Apr", "2 Apr", "3 Apr", "4 Apr", "5 Apr"]
+lab_results = {
+    "WBC": [5.5, None, 6.8, None, 6.7],
+    "RBC": [4.7, 4.8, None, 5.0, 5.1],
+}
+
+medicine_usage = [
+    {"name": "Paracetamol", "start": 1, "end": 3},
+    {"name": "Amoxicillin", "start": 2, "end": 4},
+]
+
+
 # TODO: graph show
-labTest = Bar.LabTestFrame(contentFrame, TL)
+labTest = Bar.LabTestFrame(
+    contentFrame,
+    drugsTL=TL,
+    date_range=date_range,
+    lab_results=lab_results,
+    medicine_usage=medicine_usage,
+)
 
 app.mainloop()

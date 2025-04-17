@@ -1,11 +1,14 @@
 import tkinter as tk
-import File.Variable as Var
+import Var.Variable as Var
+
+import Var.Font as Font
 
 from tkinter import messagebox
 
 
 def showImageModal(i):
     # TODO: show Image modal
+    pictureDirectory = "Data/Image"
     messagebox.showinfo("Image", f"Show image for {i}")
 
 
@@ -105,7 +108,7 @@ class CanvasGraph(tk.Canvas):
                 y + 10,
                 anchor="w",
                 text=test,
-                font=Var.graph_font,
+                font=Font.graph,
             )
             for i, val in enumerate(values):
                 if val is not None:
@@ -114,7 +117,7 @@ class CanvasGraph(tk.Canvas):
                         x,
                         y + 10,
                         text=str(val),
-                        font=Var.graph_font,
+                        font=Font.graph,
                     )
             self.row_idx += 1
 
@@ -125,7 +128,7 @@ class CanvasGraph(tk.Canvas):
             y + 10,
             anchor="w",
             text="Day",
-            font=Var.graph_font,
+            font=Font.graph,
         )
         for i in range(len(self.date_range)):
             x = self.day_x(i)
@@ -140,7 +143,7 @@ class CanvasGraph(tk.Canvas):
                 y + 10,
                 anchor="w",
                 text=med["name"],
-                font=Var.graph_font,
+                font=Font.graph,
             )
 
             start_idx = med["start"] - 1
@@ -149,6 +152,7 @@ class CanvasGraph(tk.Canvas):
             x2 = self.day_x(end_idx)
             timelinePositionY = y + 10
 
+            # TODO: draw timeline add arrow if out of bound
             self.drawTimeline(x1, x2, timelinePositionY)
 
             self.row_idx += 1
@@ -159,7 +163,7 @@ class CanvasGraph(tk.Canvas):
             timelinePosY,
             x2,
             timelinePosY,
-            fill="blue",
+            fill="black",
             width=6,
         )
         self.create_oval(
@@ -167,7 +171,7 @@ class CanvasGraph(tk.Canvas):
             timelinePosY - 5,
             x1 + 5,
             timelinePosY + 5,
-            fill="green",
+            fill="yellow",
         )
         self.create_oval(
             x2 - 5,

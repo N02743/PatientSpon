@@ -1,7 +1,9 @@
 import tkinter as tk
 
-import File.Color as Color
-import File.Variable as Var
+import Var.Variable as Var
+import Var.Color as Color
+import Var.Font as Font
+
 import File.Widget as Widget
 import File.Canvas as Canvas
 
@@ -11,7 +13,7 @@ class BannerFrame(tk.Frame):
         super().__init__(
             parent,
             bg=Color.bannerFrameBG,
-            width=Var.bannerFrame_height,
+            width=Var.bannerFrame_width,
         )
 
         self.pack(
@@ -23,16 +25,18 @@ class BannerFrame(tk.Frame):
         Label = tk.Label(
             self,
             text="Spontaneous ADR Form",
-            bg="green",
+            bg=Color.mainLabelBG,
+            font=Font.banner,
         )
-        Label.pack()
+        Label.pack(side="top", pady=10)
 
         SubLabel = tk.Label(
             self,
             text="Yommarat Hospital",
-            bg="gray",
+            bg=Color.subLabelBG,
+            font=Font.subBanner,
         )
-        SubLabel.pack()
+        SubLabel.pack(side="top")
 
 
 class PatientFrame(tk.Frame):
@@ -40,11 +44,9 @@ class PatientFrame(tk.Frame):
         super().__init__(parent)
         self.pack()
 
-        LabelList = ["HN", "AN", "Ward", "Bed", "Sex", "Name", "Age", "PhoneNumber"]
-
         InfoTextField = []
 
-        for label in LabelList:
+        for label in Var.LabelList:
             # print(label, getattr(PT, label))
             InfoTextField.append(
                 Widget.TextfieldInput(
@@ -60,6 +62,7 @@ class ConfigButtonFrame(tk.Frame):
         super().__init__(parent)
         self.pack(side="left")
 
+        # TODO: Config Button
         showLabButton = Widget.ButtonInput(self, text="Show Lab test")
         showMedButton = Widget.ButtonInput(self, text="Show Medication")
         addLabButton = Widget.ButtonInput(self, text="Add new Lab test")
@@ -72,6 +75,7 @@ class ConfirmFrame(tk.Frame):
         super().__init__(parent)
         self.pack(side="right")
 
+        # TODO: Confirm and Reset
         confirmButton = Widget.ConfirmButton(self)
         resetButton = Widget.ResetButton(self)
 
@@ -80,8 +84,8 @@ class GraphConfigFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(
             parent,
-            padx=Var.common_padding,
-            pady=Var.common_padding,
+            padx=Var.configFrame_padding,
+            pady=Var.configFrame_padding,
         )
         self.pack(side="top", fill="x")
 

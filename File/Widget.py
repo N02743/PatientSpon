@@ -1,7 +1,7 @@
 import tkinter as tk
 
-import File.Color as Color
-import File.Variable as Var
+import Var.Color as Color
+import Var.Variable as Var
 
 
 class TextfieldInput(tk.Frame):
@@ -25,7 +25,7 @@ class ButtonInput(tk.Button):
         )
         self.pack(
             side="left",
-            padx=Var.common_padding,
+            padx=Var.button_padding,
         )
 
 
@@ -34,7 +34,7 @@ class ConfirmButton(ButtonInput):
         super().__init__(
             parent,
             text="Confirm",
-            bgColor="green2",
+            bgColor=Color.confirmBG,
         )
 
 
@@ -43,5 +43,5 @@ class ResetButton(ButtonInput):
         super().__init__(
             parent,
             text="Reset",
-            bgColor="gold",
+            bgColor=Color.resetBG,
         )

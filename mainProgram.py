@@ -1,9 +1,9 @@
 import tkinter as tk
 import pandas as pd
 
-import File.getData as get
+import Data.getData as get
 import File.Bar as Bar
-import File.Variable as Var
+import Var.Variable as Var
 
 app = tk.Tk()
 

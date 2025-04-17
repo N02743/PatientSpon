@@ -1,7 +1,7 @@
 import random
 import pandas as pd
 import File.Class as Class
-import File.Variable as Var
+import Var.Variable as Var
 
 #         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
 
@@ -10,7 +10,7 @@ def get_patient_data():
     # TODO: send data from previous page
 
     # TODO: loading patient data
-    patientCSV = pd.read_csv("File/PatientData.csv")
+    patientCSV = pd.read_csv("Data/PatientData.csv")
 
     # dummy data
     patient = patientCSV.iloc[0]

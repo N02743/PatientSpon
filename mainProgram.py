@@ -1,10 +1,9 @@
 import tkinter as tk
 import pandas as pd
 
-import getData as get
-import Bar
-
-import Variable as Var
+import File.getData as get
+import File.Bar as Bar
+import File.Variable as Var
 
 app = tk.Tk()
 
@@ -12,6 +11,7 @@ app.title("Patient Spon form program")
 
 app.state("zoomed")
 
+# TODO: calculate window everytime that resize
 app.update_idletasks()
 Var.window_width = app.winfo_width()
 

@@ -1,7 +1,7 @@
 import tkinter as tk
 
-import Color
-import Variable as Var
+import File.Color as Color
+import File.Variable as Var
 
 
 class TextfieldInput(tk.Frame):

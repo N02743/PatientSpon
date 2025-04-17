@@ -1,9 +1,9 @@
 import tkinter as tk
 
-import Color
-import Variable as Var
-import Widget
-import Canvas
+import File.Color as Color
+import File.Variable as Var
+import File.Widget as Widget
+import File.Canvas as Canvas
 
 
 class BannerFrame(tk.Frame):

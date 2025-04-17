@@ -6,24 +6,6 @@ import File.Variable as Var
 #         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
 
 
-def generate_timeline_data():
-    data = {}
-
-    for i in range(5):
-        x = random.randint(1, 30)
-        # data.append([f"drug {i}": x, random.randint(1, 31 - x) + x])
-        data[f"drug {i}"] = [x, random.randint(1, 31 - x) + x]
-
-    return data
-
-
-def get_timeline_data():
-    # TODO: loading timeline data
-
-    # dummy data by random gen
-    return generate_timeline_data()
-
-
 def get_patient_data():
     # TODO: send data from previous page
 

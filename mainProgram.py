@@ -16,7 +16,6 @@ app.update_idletasks()
 Var.window_width = app.winfo_width()
 
 # Get data
-TIMELINE_DATA = get.get_timeline_data()
 PATIENT_DATA = get.get_patient_data()
 DATERANGE_DATA = get.get_dateRange_data()
 LABRESULTS_DATA = get.get_labResults_data()
@@ -51,7 +50,6 @@ config = Bar.GraphConfigFrame(contentFrame)
 # Graph show
 labTest = Bar.LabTestFrame(
     contentFrame,
-    drugsTL=TIMELINE_DATA,
     date_range=DATERANGE_DATA,
     lab_results=LABRESULTS_DATA,
     medicine_usage=MEDICINEUSAGE_DATA,

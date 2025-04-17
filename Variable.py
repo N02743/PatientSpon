@@ -7,3 +7,5 @@ graphLabel_width = 100
 graphDay_width = 80
 graphRow_height = 40
 graphCanvas_padding = 10
+
+window_width = 0

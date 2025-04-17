@@ -1,19 +1,19 @@
 import tkinter as tk
-import Variable
 import pandas as pd
-import Class
+
 import getData as get
-
-global PATIENT_DATA
-
-global TEST
-
 import Bar
 
+import Variable as Var
 
-def plot_timeline():
-    print()
+app = tk.Tk()
 
+app.title("Patient Spon form program")
+
+app.state("zoomed")
+
+app.update_idletasks()
+Var.window_width = app.winfo_width()
 
 # Get data
 TIMELINE_DATA = get.get_timeline_data()
@@ -21,12 +21,6 @@ PATIENT_DATA = get.get_patient_data()
 DATERANGE_DATA = get.get_dateRange_data()
 LABRESULTS_DATA = get.get_labResults_data()
 MEDICINEUSAGE_DATA = get.get_medicineUsage_data()
-
-app = tk.Tk()
-
-app.title("Patient Spon form program")
-
-app.state("zoomed")
 
 
 # # ฟังก์ชันเปลี่ยนหน้า
@@ -54,7 +48,7 @@ contentFrame = Bar.ContentFrame(app)
 config = Bar.GraphConfigFrame(contentFrame)
 
 
-# TODO: graph show
+# Graph show
 labTest = Bar.LabTestFrame(
     contentFrame,
     drugsTL=TIMELINE_DATA,
@@ -62,5 +56,6 @@ labTest = Bar.LabTestFrame(
     lab_results=LABRESULTS_DATA,
     medicine_usage=MEDICINEUSAGE_DATA,
 )
+
 
 app.mainloop()

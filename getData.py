@@ -1,6 +1,9 @@
 import random
 import pandas as pd
 import Class
+import Variable as Var
+
+#         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
 
 
 def generate_timeline_data():
@@ -36,7 +39,16 @@ def get_patient_data():
 
 def get_dateRange_data():
     # TODO: date range
-    date_range = ["1 Apr", "2 Apr", "3 Apr", "4 Apr", "5 Apr"]
+
+    # TODO: Calculate max day fit in frame
+
+    maxDays = (
+        Var.window_width - Var.graphLabel_width - (Var.graphCanvas_padding * 2)
+    ) // Var.graphDay_width
+
+    date_range = []
+    for i in range(maxDays):
+        date_range.append(f"{i + 1} Apr")
 
     return date_range
 
@@ -54,9 +66,9 @@ def get_labResults_data():
 def get_medicineUsage_data():
     # TODO: medicine usage
     medicine_usage = [
-        {"name": "Paracetamol", "start": 1, "end": 3},
+        {"name": "Paracetamol", "start": 1, "end": 6},
         {"name": "Amoxicillin", "start": 2, "end": 4},
-        {"name": "Iblutofel", "start": 2, "end": 3},
+        {"name": "Iblutofel", "start": 2, "end": 9},
     ]
 
     return medicine_usage

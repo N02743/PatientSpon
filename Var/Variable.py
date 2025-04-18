@@ -11,3 +11,5 @@ graphRow_height = 40
 graphCanvas_padding = 10
 
 window_width = 0
+
+dayRange_padding = 30

@@ -128,11 +128,32 @@ class CanvasGraph(tk.Canvas):
             y + 10,
             anchor="w",
             text="Day",
-            font=Font.graph,
+            font=Font.dayRange,
         )
         for i in range(len(self.date_range)):
             x = self.day_x(i)
-            self.create_text(x, y + 10, text=str(i + 1))
+            self.create_line(
+                x,
+                y - 10,
+                x,
+                y + 10,
+                fill="black",
+                width=3,
+            )
+            # TODO: change dummy text to date
+            self.create_text(x, y + 20, text=str(i + 1))
+
+        print(len(self.date_range))
+        self.create_line(
+            self.day_x(0) - Var.dayRange_padding,
+            y,
+            self.day_x(len(self.date_range) - 1) + Var.dayRange_padding,
+            y,
+            fill="black",
+            width=6,
+            arrow=tk.BOTH,
+            arrowshape=(10, 12, 6),
+        )
         self.row_idx += 1
 
     def DrawMedicine(self):

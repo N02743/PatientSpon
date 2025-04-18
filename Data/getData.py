@@ -6,6 +6,11 @@ import Var.Variable as Var
 #         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
 
 
+def get_data():
+    # TODO: get All data into one object Patient Class
+    pass
+
+
 def get_patient_data():
     # TODO: send data from previous page
 
@@ -35,7 +40,7 @@ def get_dateRange_data():
     return date_range
 
 
-def get_labResults_data():
+def get_labResults_data_by_HN():
     # TODO: lab results
     lab_results = {
         "WBC": [5.5, None, 6.8, None, 6.7],
@@ -45,7 +50,7 @@ def get_labResults_data():
     return lab_results
 
 
-def get_medicineUsage_data():
+def get_medicineUsage_data_by_HN():
     # TODO: medicine usage
     medicine_usage = [
         {"name": "Paracetamol", "start": 1, "end": 6},

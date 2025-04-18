@@ -2,8 +2,11 @@ import tkinter as tk
 import Var.Variable as Var
 
 import Var.Font as Font
+import File.Class as Class
 
 from tkinter import messagebox
+
+import Data.getData as get
 
 
 def showImageModal(i):
@@ -24,18 +27,16 @@ class CanvasGraph(tk.Canvas):
         self,
         parent,
         date_range,
-        lab_results,
-        medicine_usage,
+        patient_data,
     ):
         super().__init__(parent, bg="white")
         self.pack()
 
         self.showGrid = True
+        self.patient_data = patient_data
 
         self.redraw(
             date_range=date_range,
-            lab_results=lab_results,
-            medicine_usage=medicine_usage,
         )
 
     # return x position at center for row = 0 at day = index
@@ -52,10 +53,16 @@ class CanvasGraph(tk.Canvas):
         self.row_height = Var.graphRow_height
         self.canvas_padding = Var.graphCanvas_padding
 
-    def setVariableFromParameter(self, date_range, lab_results, medicine_usage):
+    def setVariableFromParameter(
+        self,
+        date_range,
+        # lab_results,
+        # medicine_usage,
+    ):
         self.date_range = date_range
-        self.lab_results = lab_results
-        self.medicine_usage = medicine_usage
+        # TODO: get at another position
+        self.lab_results = get.get_labResults_data_by_HN()
+        self.medicine_usage = get.get_medicineUsage_data_by_HN()
 
         lab_test_rows = len(self.lab_results)
         medicine_usage_rows = len(self.medicine_usage)
@@ -196,11 +203,14 @@ class CanvasGraph(tk.Canvas):
             fill="red",
         )
 
-    def redraw(self, date_range, lab_results, medicine_usage):
+    def redraw(
+        self,
+        date_range,
+    ):
         self.delete("all")
 
         self.setVariableFromFile()
-        self.setVariableFromParameter(date_range, lab_results, medicine_usage)
+        self.setVariableFromParameter(date_range)
 
         self.reconfighWidthAndHeight()
 

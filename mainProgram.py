@@ -18,8 +18,8 @@ Var.window_width = app.winfo_width()
 # Get data
 PATIENT_DATA = get.get_patient_data()
 DATERANGE_DATA = get.get_dateRange_data()
-LABRESULTS_DATA = get.get_labResults_data()
-MEDICINEUSAGE_DATA = get.get_medicineUsage_data()
+# LABRESULTS_DATA = get.get_labResults_data_by_HN()
+# MEDICINEUSAGE_DATA = get.get_medicineUsage_data_by_HN()
 
 
 # # ฟังก์ชันเปลี่ยนหน้า
@@ -51,8 +51,7 @@ config = Bar.GraphConfigFrame(contentFrame)
 labTest = Bar.LabTestFrame(
     contentFrame,
     date_range=DATERANGE_DATA,
-    lab_results=LABRESULTS_DATA,
-    medicine_usage=MEDICINEUSAGE_DATA,
+    patient_data=PATIENT_DATA,
 )
 
 

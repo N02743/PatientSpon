@@ -121,13 +121,17 @@ class ContentFrame(tk.Frame):
 
 
 class LabTestFrame(tk.Frame):
-    def __init__(self, parent, date_range, lab_results, medicine_usage):
+    def __init__(
+        self,
+        parent,
+        date_range,
+        patient_data,
+    ):
         super().__init__(parent)
         self.pack()
 
         canvas = Canvas.CanvasGraph(
             self,
             date_range=date_range,
-            lab_results=lab_results,
-            medicine_usage=medicine_usage,
+            patient_data=patient_data,
         )

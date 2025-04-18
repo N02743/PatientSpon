@@ -128,7 +128,7 @@ class CanvasGraph(tk.Canvas):
             y + 10,
             anchor="w",
             text="Day",
-            font=Font.dayRange,
+            font=Font.dayRangeLabel,
         )
         for i in range(len(self.date_range)):
             x = self.day_x(i)
@@ -141,7 +141,9 @@ class CanvasGraph(tk.Canvas):
                 width=3,
             )
             # TODO: change dummy text to date
-            self.create_text(x, y + 20, text=str(i + 1))
+            self.create_text(
+                x, y + 20, text=str(self.date_range[i]), font=Font.dayRange
+            )
 
         print(len(self.date_range))
         self.create_line(

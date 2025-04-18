@@ -19,18 +19,6 @@ def showImageModal(i):
 #     redraw()
 
 
-def showGridLines():
-    # TODO: togle grid line button function
-    # if show_grid:
-    #     top = canvas_padding
-    #     bottom = canvas_height - canvas_padding
-    #     for i in range(len(date_range) + 1):
-    #         x = day_x(i) + 40
-    #         line = canvas.create_line(x, top, x, bottom, fill="#ccc", dash=(2, 4))
-    #         grid_lines.append(line)
-    pass
-
-
 class CanvasGraph(tk.Canvas):
     def __init__(
         self,
@@ -41,6 +29,8 @@ class CanvasGraph(tk.Canvas):
     ):
         super().__init__(parent, bg="white")
         self.pack()
+
+        self.showGrid = True
 
         self.redraw(
             date_range=date_range,
@@ -140,9 +130,11 @@ class CanvasGraph(tk.Canvas):
                 fill="black",
                 width=3,
             )
-            # TODO: change dummy text to date
             self.create_text(
-                x, y + 20, text=str(self.date_range[i]), font=Font.dayRange
+                x,
+                y + 20,
+                text=str(self.date_range[i]),
+                font=Font.dayRange,
             )
 
         print(len(self.date_range))
@@ -220,3 +212,47 @@ class CanvasGraph(tk.Canvas):
         self.drawLabResults()
         self.drawDayRange()
         self.DrawMedicine()
+
+        if self.showGrid:
+            self.showGridLines()
+
+    def showGridLines(self):
+        # TODO: togle grid line button function
+
+        grid_lines = []
+        top = Var.graphCanvas_padding
+        bottom = self.height - Var.graphCanvas_padding
+        for i in range(len(self.date_range) + 1):
+            x = self.day_x(i)
+            line = self.create_line(
+                x,
+                top,
+                x,
+                bottom,
+                fill="#ccc",
+                dash=(2, 4),
+            )
+            grid_lines.append(line)
+
+        left = self.day_x(0)
+        right = self.day_x(len(self.date_range) - 1)
+        # TODO: Weird
+        self.row_idx = 1
+        print("test", len(self.date_range), left, right)
+        print("debug", self.total_rows)
+        for j in range(self.total_rows - 1):
+            print("debug2", j, self.row_idx, self.row_y())
+
+            line = self.create_line(
+                left,
+                self.row_y(),
+                right,
+                self.row_y(),
+                fill="#ccc",
+                dash=(2, 4),
+            )
+            self.row_idx += 1
+            grid_lines.append(line)
+
+        for line in grid_lines:
+            self.tag_lower(line)

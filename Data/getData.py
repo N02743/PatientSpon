@@ -53,7 +53,7 @@ def get_dateRange_data(start, end):
     date_range = []
     # TODO:
     iterDate = start
-    for i in range(days):
+    for i in range(days + 1):
         # TODO: Show Year?
         date = pd.to_datetime(iterDate, format="%d/%m/%Y").strftime("%d %b").lstrip("0")
         date_range.append(date)
@@ -79,6 +79,9 @@ def get_labResults_data_by_HN(HN, start, end):
     for name in labName:
         labList[name] = {}
 
+    # To iterate till end date
+    end = nextDay(end)
+
     while iterDate != end:
         labInDate = labResult[labResult["Date"] == iterDate]
         for name in labName:
@@ -98,9 +101,9 @@ def get_labResults_data_by_HN(HN, start, end):
 def get_medicineUsage_data_by_HN(HN, start, end):
     # TODO: medicine usage
     medicine_usage = [
-        {"name": "Paracetamol", "start": 1, "end": 6},
-        {"name": "Amoxicillin", "start": 2, "end": 4},
-        {"name": "Iblutofel", "start": 2, "end": 9},
+        {"name": "Paracetamol", "start": "01/03/2025", "end": "06/03/2025"},
+        {"name": "Amoxicillin", "start": "02/03/2025", "end": "04/03/2025"},
+        {"name": "Iblutofel", "start": "02/03/2025", "end": "07/03/2025"},
     ]
 
     return medicine_usage

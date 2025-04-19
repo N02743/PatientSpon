@@ -7,7 +7,6 @@ import File.Class as Class
 from tkinter import messagebox
 
 import Data.getData as get
-import pandas as pd
 
 # TODO:
 #         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
@@ -17,13 +16,6 @@ def showImageModal(i):
     # TODO: show Image modal
     pictureDirectory = "Data/Image"
     messagebox.showinfo("Image", f"Show image for {i}")
-
-
-# TODO: Duplicate at getData.py
-def nextDay(date):
-    return (pd.to_datetime(date, format="%d/%m/%Y") + pd.Timedelta(days=1)).strftime(
-        "%d/%m/%Y"
-    )
 
 
 # def toggle_grid():
@@ -197,8 +189,16 @@ class CanvasGraph(tk.Canvas):
                 font=Font.graph,
             )
 
-            start_idx = med["start"] - 1
-            end_idx = med["end"] - 1
+            start_idx = get.findDays(self.startDate, med["start"])
+            end_idx = get.findDays(self.startDate, med["end"])
+            end_diff = get.findDays(med["end"], self.endDate)
+
+            # out of bound
+            if end_diff < 0:
+                pass
+
+            print("med", med["start"], med["end"], start_idx, end_idx, end_diff)
+
             x1 = self.day_x(start_idx)
             x2 = self.day_x(end_idx)
             timelinePositionY = y + 10

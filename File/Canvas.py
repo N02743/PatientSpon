@@ -7,12 +7,20 @@ import File.Class as Class
 from tkinter import messagebox
 
 import Data.getData as get
+import pandas as pd
 
 
 def showImageModal(i):
     # TODO: show Image modal
     pictureDirectory = "Data/Image"
     messagebox.showinfo("Image", f"Show image for {i}")
+
+
+# TODO: Duplicate at getData.py
+def nextDay(date):
+    return (pd.to_datetime(date, format="%d/%m/%Y") + pd.Timedelta(days=1)).strftime(
+        "%d/%m/%Y"
+    )
 
 
 # def toggle_grid():
@@ -27,13 +35,17 @@ class CanvasGraph(tk.Canvas):
         self,
         parent,
         date_range,
-        patient_data,
+        patient_data: Class.Patient,
     ):
         super().__init__(parent, bg="white")
         self.pack()
 
         self.showGrid = True
         self.patient_data = patient_data
+
+        # TODO: check if valid (end is after start)
+        self.startDate = "01/03/2025"
+        self.endDate = "07/03/2025"
 
         self.redraw(
             date_range=date_range,
@@ -61,8 +73,16 @@ class CanvasGraph(tk.Canvas):
     ):
         self.date_range = date_range
         # TODO: get at another position
-        self.lab_results = get.get_labResults_data_by_HN()
-        self.medicine_usage = get.get_medicineUsage_data_by_HN()
+        self.lab_results = get.get_labResults_data_by_HN(
+            HN=self.patient_data.HN,
+            start=self.startDate,
+            end=self.endDate,
+        )
+        self.medicine_usage = get.get_medicineUsage_data_by_HN(
+            HN=self.patient_data.HN,
+            start=self.startDate,
+            end=self.endDate,
+        )
 
         lab_test_rows = len(self.lab_results)
         medicine_usage_rows = len(self.medicine_usage)
@@ -98,25 +118,53 @@ class CanvasGraph(tk.Canvas):
         self.row_idx += 1
 
     def drawLabResults(self):
-        for test, values in self.lab_results.items():
+        # labResults = self.lab_results
+        labResults = self.lab_results
+
+        for labTest in labResults.keys():
             y = self.row_y()
             self.create_text(
                 5,
                 y + 10,
                 anchor="w",
-                text=test,
+                text=labTest,
                 font=Font.graph,
             )
-            for i, val in enumerate(values):
-                if val is not None:
+
+            labResultsOnName = labResults[labTest]
+
+            for i, date in enumerate(labResultsOnName.keys()):
+                result = labResultsOnName[date]
+
+                if result is not None:
                     x = self.day_x(i)
                     self.create_text(
                         x,
                         y + 10,
-                        text=str(val),
+                        text=str(result),
                         font=Font.graph,
                     )
             self.row_idx += 1
+
+        # for test, values in self.lab_results.items():
+        #     y = self.row_y()
+        #     self.create_text(
+        #         5,
+        #         y + 10,
+        #         anchor="w",
+        #         text=test,
+        #         font=Font.graph,
+        #     )
+        #     for i, val in enumerate(values):
+        #         if val is not None:
+        #             x = self.day_x(i)
+        #             self.create_text(
+        #                 x,
+        #                 y + 10,
+        #                 text=str(val),
+        #                 font=Font.graph,
+        #             )
+        #     self.row_idx += 1
 
     def drawDayRange(self):
         y = self.row_y()
@@ -144,7 +192,6 @@ class CanvasGraph(tk.Canvas):
                 font=Font.dayRange,
             )
 
-        print(len(self.date_range))
         self.create_line(
             self.day_x(0) - Var.dayRange_padding,
             y,
@@ -248,10 +295,7 @@ class CanvasGraph(tk.Canvas):
         right = self.day_x(len(self.date_range) - 1)
         # TODO: Weird
         self.row_idx = 1
-        print("test", len(self.date_range), left, right)
-        print("debug", self.total_rows)
         for j in range(self.total_rows - 1):
-            print("debug2", j, self.row_idx, self.row_y())
 
             line = self.create_line(
                 left,

@@ -11,46 +11,86 @@ def get_data():
     pass
 
 
-def get_patient_data():
+# TODO: Duplicate at Canvas.py
+def nextDay(date):
+    return (pd.to_datetime(date, format="%d/%m/%Y") + pd.Timedelta(days=1)).strftime(
+        "%d/%m/%Y"
+    )
+
+
+def get_patient_data_by_HN(HN):
     # TODO: send data from previous page
 
     # TODO: loading patient data
-    patientCSV = pd.read_csv("Data/PatientData.csv")
+    patientCSV = pd.read_csv(
+        "Data/Random/PatientData.csv",
+        dtype={
+            "HN": str,
+            "AN": str,
+            "PhoneNumber": str,
+        },
+    )
 
     # dummy data
-    patient = patientCSV.iloc[0]
+    patient = patientCSV[patientCSV["HN"] == HN]
+    # print(patient)
     PT = Class.Patient(patientPD=patient)
 
     return PT
 
 
-def get_dateRange_data():
+def get_dateRange_data(start, end):
     # TODO: date range
-
-    # TODO: Calculate max day fit in frame
 
     maxDays = (
         Var.window_width - Var.graphLabel_width - (Var.graphCanvas_padding * 2)
     ) // Var.graphDay_width
 
     date_range = []
-    for i in range(maxDays):
+    # TODO:
+    for i in range(10):
         date_range.append(f"{i + 1} Apr")
+    # for i in range():
+    #     date_range.append(f"{i + 1} Apr")
 
     return date_range
 
 
-def get_labResults_data_by_HN():
-    # TODO: lab results
-    lab_results = {
-        "WBC": [5.5, None, 6.8, None, 6.7],
-        "RBC": [4.7, 4.8, None, 5.0, 5.1],
-    }
+def get_labResults_data_by_HN(HN, start, end):
+    labResultCSV = pd.read_csv(
+        "Data/mock_lab_results.csv",
+        dtype={
+            "HN": str,
+            "Date": str,
+        },
+    )
+    labResult = labResultCSV[labResultCSV["HN"] == HN]
 
-    return lab_results
+    labList = {}
+
+    iterDate = start
+    labName = labResult["LabName"].unique()
+
+    for name in labName:
+        labList[name] = {}
+
+    while iterDate != end:
+        labInDate = labResult[labResult["Date"] == iterDate]
+        for name in labName:
+            labInName = labInDate[labInDate["LabName"] == name]
+            if not labInName.empty:
+                labList[name][iterDate] = float(labInName["Result"].values[0])
+
+            else:
+                labList[name][iterDate] = None
+
+        iterDate = nextDay(iterDate)
+    print(labList)
+
+    return labList
 
 
-def get_medicineUsage_data_by_HN():
+def get_medicineUsage_data_by_HN(HN, start, end):
     # TODO: medicine usage
     medicine_usage = [
         {"name": "Paracetamol", "start": 1, "end": 6},

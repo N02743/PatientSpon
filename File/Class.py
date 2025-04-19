@@ -7,17 +7,17 @@ class Patient:
         self,
         patientPD,
     ):
-        self.HN = patientPD["HN"]
-        self.AN = patientPD["AN"]
-        self.Ward = patientPD["Ward"]
-        self.Bed = patientPD["Bed"]
-        self.Sex = patientPD["Sex"]
-        self.Name = patientPD["Name"]
-        self.Age = patientPD["Age"]
-        self.PhoneNumber = patientPD["PhoneNumber"]
+        self.HN = patientPD.loc[0, "HN"]
+        self.AN = patientPD.loc[0, "AN"]
+        self.Ward = patientPD.loc[0, "Ward"]
+        self.Bed = patientPD.loc[0, "Bed"]
+        self.Sex = patientPD.loc[0, "Sex"]
+        self.Name = patientPD.loc[0, "Name"]
+        self.Age = patientPD.loc[0, "Age"]
+        self.PhoneNumber = patientPD.loc[0, "PhoneNumber"]
 
-        self.LabResults = get.get_labResults_data_by_HN()
-        self.MedicineUsage = get.get_medicineUsage_data_by_HN()
+        # self.LabResults = get.get_labResults_data_by_HN(self.HN)
+        # self.MedicineUsage = get.get_medicineUsage_data_by_HN(self.HN)
 
     def __str__(self):
         # TODO: string

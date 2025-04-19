@@ -15,9 +15,17 @@ app.state("zoomed")
 app.update_idletasks()
 Var.window_width = app.winfo_width()
 
+patient_id = "0000000000"
+# TODO: init start -> 01/present_month, end -> "" -> show max available
+start_date = "01/03/2025"
+end_date = "10/03/2025"
+
 # Get data
-PATIENT_DATA = get.get_patient_data()
-DATERANGE_DATA = get.get_dateRange_data()
+PATIENT_DATA = get.get_patient_data_by_HN(patient_id)
+DATERANGE_DATA = get.get_dateRange_data(
+    start=start_date,
+    end=end_date,
+)
 # LABRESULTS_DATA = get.get_labResults_data_by_HN()
 # MEDICINEUSAGE_DATA = get.get_medicineUsage_data_by_HN()
 

@@ -1,5 +1,4 @@
 import tkinter as tk
-import pandas as pd
 
 import Data.getData as get
 import File.Bar as Bar

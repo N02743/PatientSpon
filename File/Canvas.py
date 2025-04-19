@@ -10,20 +10,13 @@ import Data.getData as get
 import Var.GlobalVariable as Global
 
 # TODO:
-#         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
+# self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
 
 
 def showImageModal(i):
     # TODO: show Image modal
     pictureDirectory = "Data/Image"
     messagebox.showinfo("Image", f"Show image for {i}")
-
-
-# def toggle_grid():
-#     global show_grid
-#     show_grid = not show_grid
-#     grid_btn.config(text=f"Grid: {'ON' if show_grid else 'OFF'}")
-#     redraw()
 
 
 class CanvasGraph(tk.Canvas):

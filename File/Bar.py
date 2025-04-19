@@ -14,9 +14,38 @@ def toggleGrid():
     print("toggle grid =", Global.showGrid)
 
 
-def canvasRedraw():
+def toggleLabTest():
+    Global.showLabTest = not Global.showLabTest
+    print("toggle Lab test =", Global.showLabTest)
+
+
+def toggleMedUsage():
+    Global.showMedUsage = not Global.showMedUsage
+    print("toggle Medicine Usage =", Global.showMedUsage)
+
+
+def addNewLabTest():
+    # TODO:
+    print("Add New Lab Test")
+
+
+def addNewMedUsage():
+    # TODO:
+    print("Add New Medicine Usage")
+
+
+def configTimeTick():
+    # TODO:
+    print("Config Time Tick")
+
+
+def confirmButtonFunction():
     # Canvas.CanvasGraph.redraw()
-    print("Canvas redraw")
+    print("Confirm Button")
+
+
+def resetButtonFunction():
+    print("Reset Button")
 
 
 class BannerFrame(tk.Frame):
@@ -74,13 +103,37 @@ class ConfigButtonFrame(tk.Frame):
         self.pack(side="left")
 
         # TODO: Config Button
-        showLabButton = Widget.ButtonInput(self, text="Show Lab test")
-        showMedButton = Widget.ButtonInput(self, text="Show Medication")
-        addLabButton = Widget.ButtonInput(self, text="Add new Lab test")
-        addMedButton = Widget.ButtonInput(self, text="Add new Medication")
-        timeTickButton = Widget.ButtonInput(self, text="Time tick")
+        showLabButton = Widget.ButtonInput(
+            self,
+            text="Show Lab test",
+            command=lambda: toggleLabTest(),
+        )
+        showMedButton = Widget.ButtonInput(
+            self,
+            text="Show Medication",
+            command=lambda: toggleMedUsage(),
+        )
+
+        addLabButton = Widget.ButtonInput(
+            self,
+            text="Add new Lab test",
+            command=lambda: addNewLabTest(),
+        )
+        addMedButton = Widget.ButtonInput(
+            self,
+            text="Add new Medication",
+            command=lambda: addNewMedUsage(),
+        )
+
+        timeTickButton = Widget.ButtonInput(
+            self,
+            text="Time tick",
+            command=lambda: configTimeTick(),
+        )
         showGridButton = Widget.ButtonInput(
-            self, text="Show grid", command=lambda: toggleGrid()
+            self,
+            text="Show grid",
+            command=lambda: toggleGrid(),
         )
 
 
@@ -90,8 +143,14 @@ class ConfirmFrame(tk.Frame):
         self.pack(side="right")
 
         # TODO: Confirm and Reset
-        confirmButton = Widget.ConfirmButton(self, lambda: canvasRedraw())
-        resetButton = Widget.ResetButton(self)
+        resetButton = Widget.ResetButton(
+            self,
+            command=lambda: resetButtonFunction(),
+        )
+        confirmButton = Widget.ConfirmButton(
+            self,
+            command=lambda: confirmButtonFunction(),
+        )
 
 
 class GraphConfigFrame(tk.Frame):

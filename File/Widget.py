@@ -17,7 +17,13 @@ class TextfieldInput(tk.Frame):
 
 
 class ButtonInput(tk.Button):
-    def __init__(self, parent, text, bgColor="white", command=None):
+    def __init__(
+        self,
+        parent,
+        text,
+        bgColor="white",
+        command=None,
+    ):
         super().__init__(
             parent,
             text=text,
@@ -45,11 +51,12 @@ class ConfirmButton(ButtonInput):
 
 
 class ResetButton(ButtonInput):
-    def __init__(self, parent):
+    def __init__(self, parent, command=None):
         super().__init__(
             parent,
             text="Reset",
             bgColor=Color.resetBG,
+            command=command,
         )
         self.pack(
             side="right",

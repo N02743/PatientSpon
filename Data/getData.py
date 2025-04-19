@@ -85,7 +85,6 @@ def get_labResults_data_by_HN(HN, start, end):
                 labList[name][iterDate] = None
 
         iterDate = nextDay(iterDate)
-    print(labList)
 
     return labList
 

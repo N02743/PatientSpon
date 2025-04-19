@@ -118,7 +118,6 @@ class CanvasGraph(tk.Canvas):
         self.row_idx += 1
 
     def drawLabResults(self):
-        # labResults = self.lab_results
         labResults = self.lab_results
 
         for labTest in labResults.keys():
@@ -145,26 +144,6 @@ class CanvasGraph(tk.Canvas):
                         font=Font.graph,
                     )
             self.row_idx += 1
-
-        # for test, values in self.lab_results.items():
-        #     y = self.row_y()
-        #     self.create_text(
-        #         5,
-        #         y + 10,
-        #         anchor="w",
-        #         text=test,
-        #         font=Font.graph,
-        #     )
-        #     for i, val in enumerate(values):
-        #         if val is not None:
-        #             x = self.day_x(i)
-        #             self.create_text(
-        #                 x,
-        #                 y + 10,
-        #                 text=str(val),
-        #                 font=Font.graph,
-        #             )
-        #     self.row_idx += 1
 
     def drawDayRange(self):
         y = self.row_y()

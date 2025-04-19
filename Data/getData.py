@@ -3,19 +3,19 @@ import pandas as pd
 import File.Class as Class
 import Var.Variable as Var
 
-#         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
-
-
-def get_data():
-    # TODO: get All data into one object Patient Class
-    pass
-
 
 # TODO: Duplicate at Canvas.py
 def nextDay(date):
     return (pd.to_datetime(date, format="%d/%m/%Y") + pd.Timedelta(days=1)).strftime(
         "%d/%m/%Y"
     )
+
+
+def findDays(start, end):
+    return (
+        pd.to_datetime(end, format="%d/%m/%Y")
+        - pd.to_datetime(start, format="%d/%m/%Y")
+    ).days
 
 
 def get_patient_data_by_HN(HN):
@@ -42,16 +42,22 @@ def get_patient_data_by_HN(HN):
 def get_dateRange_data(start, end):
     # TODO: date range
 
-    maxDays = (
-        Var.window_width - Var.graphLabel_width - (Var.graphCanvas_padding * 2)
-    ) // Var.graphDay_width
+    days = findDays(start, end)
+
+    print(days)
+
+    # maxDays = (
+    #     Var.window_width - Var.graphLabel_width - (Var.graphCanvas_padding * 2)
+    # ) // Var.graphDay_width
 
     date_range = []
     # TODO:
-    for i in range(10):
-        date_range.append(f"{i + 1} Apr")
-    # for i in range():
-    #     date_range.append(f"{i + 1} Apr")
+    iterDate = start
+    for i in range(days):
+        # TODO: Show Year?
+        date = pd.to_datetime(iterDate, format="%d/%m/%Y").strftime("%d %b").lstrip("0")
+        date_range.append(date)
+        iterDate = nextDay(iterDate)
 
     return date_range
 

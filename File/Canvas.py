@@ -9,6 +9,9 @@ from tkinter import messagebox
 import Data.getData as get
 import pandas as pd
 
+# TODO:
+#         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
+
 
 def showImageModal(i):
     # TODO: show Image modal

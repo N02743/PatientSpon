@@ -42,7 +42,7 @@ class CanvasGraph(tk.Canvas):
 
         # TODO: auto set date
         self.startDate = "01/03/2025"
-        self.endDate = "10/03/2025"
+        self.endDate = "20/03/2025"
 
         self.redraw(
             # date_range=date_range,
@@ -173,9 +173,9 @@ class CanvasGraph(tk.Canvas):
             )
 
         self.create_line(
-            self.day_x(0) - Var.dayRange_padding,
+            self.day_x(0) - Var.arrowGraph_padding,
             y,
-            self.day_x(len(self.date_range) - 1) + Var.dayRange_padding,
+            self.day_x(len(self.date_range) - 1) + Var.arrowGraph_padding,
             y,
             fill="black",
             width=6,
@@ -185,31 +185,52 @@ class CanvasGraph(tk.Canvas):
         self.row_idx += 1
 
     def DrawMedicine(self):
-        for med in self.medicine_usage:
+        for medicine in self.medicine_usage.keys():
             y = self.row_y()
             self.create_text(
                 5,
                 y + 10,
                 anchor="w",
-                text=med["name"],
+                text=medicine,
                 font=Font.graph,
             )
+
+            med = self.medicine_usage[medicine]
+            timelinePositionY = y + 10
+
+            if get.findDays(self.endDate, med["start"]) > 0:
+                pos = self.day_x(get.findDays(self.startDate, self.endDate))
+                self.create_line(
+                    pos,
+                    timelinePositionY,
+                    pos + Var.arrowGraph_padding,
+                    timelinePositionY,
+                    fill="black",
+                    width=6,
+                    arrow=tk.BOTH,
+                )
+                self.row_idx += 1
+                continue
+
+            if get.findDays(med["end"], self.startDate) > 0:
+                pos = self.day_x(0)
+                self.create_line(
+                    pos - Var.arrowGraph_padding,
+                    timelinePositionY,
+                    pos,
+                    timelinePositionY,
+                    fill="black",
+                    width=6,
+                    arrow=tk.BOTH,
+                )
+                self.row_idx += 1
+                continue
 
             start_idx = get.findDays(self.startDate, med["start"])
             end_idx = get.findDays(self.startDate, med["end"])
 
             start_diff = get.findDays(self.startDate, med["start"])
             end_diff = get.findDays(med["end"], self.endDate)
-
-            print(
-                "med",
-                med["start"],
-                med["end"],
-                start_idx,
-                end_idx,
-                start_diff,
-                end_diff,
-            )
 
             # out of bound
             if start_diff < 0:
@@ -223,8 +244,6 @@ class CanvasGraph(tk.Canvas):
             else:
                 x2 = self.day_x(end_idx)
 
-            timelinePositionY = y + 10
-
             # TODO: draw timeline add arrow if out of bound
             self.drawTimeline(x1, x2, timelinePositionY)
 
@@ -234,13 +253,16 @@ class CanvasGraph(tk.Canvas):
 
         if x1 == -1:
             arrowStart = True
-            x1 = self.day_x(0) - 10
+            x1 = self.day_x(0) - Var.arrowGraph_padding
         else:
             arrowStart = False
 
         if x2 == -1:
             arrowEnd = True
-            x2 = self.day_x(get.findDays(self.startDate, self.endDate)) + 10
+            x2 = (
+                self.day_x(get.findDays(self.startDate, self.endDate))
+                + Var.arrowGraph_padding
+            )
         else:
             arrowEnd = False
 

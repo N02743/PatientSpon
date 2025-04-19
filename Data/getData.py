@@ -44,7 +44,7 @@ def get_dateRange_data(start, end):
 
     days = findDays(start, end)
 
-    print(days)
+    # print(days)
 
     # maxDays = (
     #     Var.window_width - Var.graphLabel_width - (Var.graphCanvas_padding * 2)
@@ -99,11 +99,33 @@ def get_labResults_data_by_HN(HN, start, end):
 
 
 def get_medicineUsage_data_by_HN(HN, start, end):
-    # TODO: medicine usage
-    medicine_usage = [
-        {"name": "Paracetamol", "start": "01/03/2025", "end": "06/03/2025"},
-        {"name": "Amoxicillin", "start": "02/03/2025", "end": "04/03/2025"},
-        {"name": "Iblutofel", "start": "02/03/2025", "end": "07/03/2025"},
-    ]
+    medicineUsageCSV = pd.read_csv(
+        "Data/mock_medicine_usage.csv",
+        dtype={
+            "HN": str,
+            "Date": str,
+        },
+    )
 
-    return medicine_usage
+    medicineUsage = medicineUsageCSV[medicineUsageCSV["HN"] == HN]
+
+    # print(medicineUsage)
+
+    medicineDict = {}
+
+    medName = medicineUsage["MedName"].unique()
+    for med in medName:
+        medUsageInName = medicineUsage[medicineUsage["MedName"] == med]
+        startDate = medUsageInName["Start"].values[0]
+        endDate = medUsageInName["End"].values[0]
+        medicineDict[med] = {"start": startDate, "end": endDate}
+
+    # # TODO: medicine usage
+    # medicine_usage = [
+    #     {"name": "Paracetamol", "start": "01/03/2025", "end": "06/03/2025"},
+    #     {"name": "Amoxicillin", "start": "02/03/2025", "end": "04/03/2025"},
+    #     {"name": "Iblutofel", "start": "02/03/2025", "end": "07/03/2025"},
+    # ]
+
+    # return medicine_usage
+    return medicineDict

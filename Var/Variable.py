@@ -12,4 +12,4 @@ graphCanvas_padding = 10
 
 window_width = 0
 
-dayRange_padding = 30
+arrowGraph_padding = 30

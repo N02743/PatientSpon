@@ -58,7 +58,7 @@ config = Bar.GraphConfigFrame(contentFrame)
 # Graph show
 labTest = Bar.LabTestFrame(
     contentFrame,
-    date_range=DATERANGE_DATA,
+    # date_range=DATERANGE_DATA,
     patient_data=PATIENT_DATA,
 )
 

@@ -29,7 +29,7 @@ class CanvasGraph(tk.Canvas):
     def __init__(
         self,
         parent,
-        date_range,
+        # date_range,
         patient_data: Class.Patient,
     ):
         super().__init__(parent, bg="white")
@@ -39,11 +39,13 @@ class CanvasGraph(tk.Canvas):
         self.patient_data = patient_data
 
         # TODO: check if valid (end is after start)
+
+        # TODO: auto set date
         self.startDate = "01/03/2025"
-        self.endDate = "07/03/2025"
+        self.endDate = "10/03/2025"
 
         self.redraw(
-            date_range=date_range,
+            # date_range=date_range,
         )
 
     # return x position at center for row = 0 at day = index
@@ -62,11 +64,15 @@ class CanvasGraph(tk.Canvas):
 
     def setVariableFromParameter(
         self,
-        date_range,
+        # date_range,
         # lab_results,
         # medicine_usage,
     ):
-        self.date_range = date_range
+        # self.date_range = date_range
+        self.date_range = get.get_dateRange_data(
+            start=self.startDate,
+            end=self.endDate,
+        )
         # TODO: get at another position
         self.lab_results = get.get_labResults_data_by_HN(
             HN=self.patient_data.HN,
@@ -191,16 +197,32 @@ class CanvasGraph(tk.Canvas):
 
             start_idx = get.findDays(self.startDate, med["start"])
             end_idx = get.findDays(self.startDate, med["end"])
+
+            start_diff = get.findDays(self.startDate, med["start"])
             end_diff = get.findDays(med["end"], self.endDate)
+
+            print(
+                "med",
+                med["start"],
+                med["end"],
+                start_idx,
+                end_idx,
+                start_diff,
+                end_diff,
+            )
+
+            # out of bound
+            if start_diff < 0:
+                x1 = -1
+            else:
+                x1 = self.day_x(start_idx)
 
             # out of bound
             if end_diff < 0:
-                pass
+                x2 = -1
+            else:
+                x2 = self.day_x(end_idx)
 
-            print("med", med["start"], med["end"], start_idx, end_idx, end_diff)
-
-            x1 = self.day_x(start_idx)
-            x2 = self.day_x(end_idx)
             timelinePositionY = y + 10
 
             # TODO: draw timeline add arrow if out of bound
@@ -209,6 +231,28 @@ class CanvasGraph(tk.Canvas):
             self.row_idx += 1
 
     def drawTimeline(self, x1, x2, timelinePosY):
+
+        if x1 == -1:
+            arrowStart = True
+            x1 = self.day_x(0) - 10
+        else:
+            arrowStart = False
+
+        if x2 == -1:
+            arrowEnd = True
+            x2 = self.day_x(get.findDays(self.startDate, self.endDate)) + 10
+        else:
+            arrowEnd = False
+
+        if arrowStart and arrowEnd:
+            arrow = tk.BOTH
+        elif arrowStart:
+            arrow = tk.FIRST
+        elif arrowEnd:
+            arrow = tk.LAST
+        else:
+            arrow = tk.NONE
+
         self.create_line(
             x1,
             timelinePosY,
@@ -216,30 +260,36 @@ class CanvasGraph(tk.Canvas):
             timelinePosY,
             fill="black",
             width=6,
+            arrow=arrow,
         )
-        self.create_oval(
-            x1 - 5,
-            timelinePosY - 5,
-            x1 + 5,
-            timelinePosY + 5,
-            fill="yellow",
-        )
-        self.create_oval(
-            x2 - 5,
-            timelinePosY - 5,
-            x2 + 5,
-            timelinePosY + 5,
-            fill="red",
-        )
+
+        if not arrowStart:
+            self.create_oval(
+                x1 - 5,
+                timelinePosY - 5,
+                x1 + 5,
+                timelinePosY + 5,
+                fill="yellow",
+            )
+
+        if not arrowEnd:
+            self.create_oval(
+                x2 - 5,
+                timelinePosY - 5,
+                x2 + 5,
+                timelinePosY + 5,
+                fill="red",
+            )
 
     def redraw(
         self,
-        date_range,
+        # date_range,
     ):
         self.delete("all")
 
         self.setVariableFromFile()
-        self.setVariableFromParameter(date_range)
+        # self.setVariableFromParameter(date_range)
+        self.setVariableFromParameter()
 
         self.reconfighWidthAndHeight()
 

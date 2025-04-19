@@ -124,7 +124,7 @@ class LabTestFrame(tk.Frame):
     def __init__(
         self,
         parent,
-        date_range,
+        # date_range,
         patient_data,
     ):
         super().__init__(parent)
@@ -132,6 +132,6 @@ class LabTestFrame(tk.Frame):
 
         canvas = Canvas.CanvasGraph(
             self,
-            date_range=date_range,
+            # date_range=date_range,
             patient_data=patient_data,
         )

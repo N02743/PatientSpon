@@ -66,11 +66,10 @@ def get_labResults_data_by_HN(HN, start, end):
     )
     labResult = labResultCSV[labResultCSV["HN"] == HN]
 
-    labList = {}
-
     iterDate = start
     labName = labResult["LabName"].unique()
 
+    labList = {}
     for name in labName:
         labList[name] = {}
 
@@ -78,6 +77,7 @@ def get_labResults_data_by_HN(HN, start, end):
         labInDate = labResult[labResult["Date"] == iterDate]
         for name in labName:
             labInName = labInDate[labInDate["LabName"] == name]
+
             if not labInName.empty:
                 labList[name][iterDate] = float(labInName["Result"].values[0])
 

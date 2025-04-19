@@ -3,7 +3,7 @@ import pandas as pd
 
 import Data.getData as get
 import File.Bar as Bar
-import Var.Variable as Var
+import Var.GlobalVariable as Var
 
 app = tk.Tk()
 

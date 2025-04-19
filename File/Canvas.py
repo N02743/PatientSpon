@@ -7,6 +7,7 @@ import File.Class as Class
 from tkinter import messagebox
 
 import Data.getData as get
+import Var.GlobalVariable as Global
 
 # TODO:
 #         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
@@ -35,7 +36,6 @@ class CanvasGraph(tk.Canvas):
         super().__init__(parent, bg="white")
         self.pack()
 
-        self.showGrid = True
         self.patient_data = patient_data
 
         # TODO: check if valid (end is after start)
@@ -57,6 +57,7 @@ class CanvasGraph(tk.Canvas):
         return self.canvas_padding + self.row_idx * self.row_height
 
     def setVariableFromFile(self):
+        self.showGrid = Global.showGrid
         self.label_width = Var.graphLabel_width
         self.day_width = Var.graphDay_width
         self.row_height = Var.graphRow_height

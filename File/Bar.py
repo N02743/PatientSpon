@@ -1,11 +1,22 @@
 import tkinter as tk
 
+import Var.GlobalVariable as Global
 import Var.Variable as Var
 import Var.Color as Color
 import Var.Font as Font
 
 import File.Widget as Widget
 import File.Canvas as Canvas
+
+
+def toggleGrid():
+    Global.showGrid = not Global.showGrid
+    print("toggle grid =", Global.showGrid)
+
+
+def canvasRedraw():
+    # Canvas.CanvasGraph.redraw()
+    print("Canvas redraw")
 
 
 class BannerFrame(tk.Frame):
@@ -46,7 +57,7 @@ class PatientFrame(tk.Frame):
 
         InfoTextField = []
 
-        for label in Var.LabelList:
+        for label in Global.LabelList:
             # print(label, getattr(PT, label))
             InfoTextField.append(
                 Widget.TextfieldInput(
@@ -68,6 +79,9 @@ class ConfigButtonFrame(tk.Frame):
         addLabButton = Widget.ButtonInput(self, text="Add new Lab test")
         addMedButton = Widget.ButtonInput(self, text="Add new Medication")
         timeTickButton = Widget.ButtonInput(self, text="Time tick")
+        showGridButton = Widget.ButtonInput(
+            self, text="Show grid", command=lambda: toggleGrid()
+        )
 
 
 class ConfirmFrame(tk.Frame):
@@ -76,7 +90,7 @@ class ConfirmFrame(tk.Frame):
         self.pack(side="right")
 
         # TODO: Confirm and Reset
-        confirmButton = Widget.ConfirmButton(self)
+        confirmButton = Widget.ConfirmButton(self, lambda: canvasRedraw())
         resetButton = Widget.ResetButton(self)
 
 

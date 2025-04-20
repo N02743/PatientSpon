@@ -32,7 +32,7 @@ class ButtonInput(tk.Button):
         )
         self.pack(
             side="left",
-            padx=Var.button_padding,
+            padx=Var.padding,
         )
 
 
@@ -46,7 +46,7 @@ class ConfirmButton(ButtonInput):
         )
         self.pack(
             side="right",
-            padx=Var.button_padding,
+            padx=Var.padding,
         )
 
 
@@ -60,5 +60,5 @@ class ResetButton(ButtonInput):
         )
         self.pack(
             side="right",
-            padx=Var.button_padding,
+            padx=Var.padding,
         )

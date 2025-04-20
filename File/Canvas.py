@@ -23,7 +23,6 @@ class CanvasGraph(tk.Canvas):
     def __init__(
         self,
         parent,
-        # date_range,
         patient_data: Class.Patient,
     ):
         super().__init__(parent, bg="white")
@@ -31,15 +30,11 @@ class CanvasGraph(tk.Canvas):
 
         self.patient_data = patient_data
 
-        # TODO: check if valid (end is after start)
-
         # TODO: auto set date
         self.startDate = "01/03/2025"
-        self.endDate = "20/03/2025"
+        self.endDate = "18/03/2025"
 
-        self.redraw(
-            # date_range=date_range,
-        )
+        self.redraw()
 
     # return x position at center for row = 0 at day = index
     def day_x(self, index):
@@ -50,23 +45,17 @@ class CanvasGraph(tk.Canvas):
         return self.canvas_padding + self.row_idx * self.row_height
 
     def setVariableFromFile(self):
-        self.showGrid = Global.showGrid
         self.label_width = Var.graphLabel_width
         self.day_width = Var.graphDay_width
         self.row_height = Var.graphRow_height
-        self.canvas_padding = Var.graphCanvas_padding
+        self.canvas_padding = Var.padding
 
-    def setVariableFromParameter(
-        self,
-        # date_range,
-        # lab_results,
-        # medicine_usage,
-    ):
-        # self.date_range = date_range
+    def setVariableFromParameter(self):
         self.date_range = get.get_dateRange_data(
             start=self.startDate,
             end=self.endDate,
         )
+
         # TODO: get at another position
         self.lab_results = get.get_labResults_data_by_HN(
             HN=self.patient_data.HN,
@@ -83,14 +72,14 @@ class CanvasGraph(tk.Canvas):
         medicine_usage_rows = len(self.medicine_usage)
         self.total_rows = 1 + lab_test_rows + 1 + medicine_usage_rows
 
-    def reconfighWidthAndHeight(self):
-        self.recalWidthAndHeight()
+    def reconfig_WidthAndHeight(self):
+        self.recalculate_WidthAndHeight()
         self.config(
             width=self.width,
             height=self.height,
         )
 
-    def recalWidthAndHeight(self):
+    def recalculate_WidthAndHeight(self):
         self.width = (
             self.label_width
             + (len(self.date_range) * self.day_width)
@@ -100,16 +89,20 @@ class CanvasGraph(tk.Canvas):
         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
 
     def createImageButton(self):
+        # TODO: create padding
+
+        iterDate = self.startDate
         for i in range(len(self.date_range)):
             x = self.day_x(i)
             y = self.row_y()
             btn = tk.Button(
                 self,
                 text="📷",
-                command=lambda d=i: showImageModal(d),
+                command=lambda d=iterDate: showImageModal(d),
                 width=2,
             )
             self.create_window(x, y + 25, window=btn)
+            iterDate = get.nextDay(iterDate)
         self.row_idx += 1
 
     def drawLabResults(self):
@@ -141,10 +134,10 @@ class CanvasGraph(tk.Canvas):
             self.row_idx += 1
 
     def drawDayRange(self):
-        y = self.row_y()
+        y = self.row_y() + 10
         self.create_text(
             5,
-            y + 10,
+            y,
             anchor="w",
             text="Day",
             font=Font.dayRangeLabel,
@@ -307,7 +300,7 @@ class CanvasGraph(tk.Canvas):
         # self.setVariableFromParameter(date_range)
         self.setVariableFromParameter()
 
-        self.reconfighWidthAndHeight()
+        self.reconfig_WidthAndHeight()
 
         # TODO: expand size calculate
 
@@ -318,15 +311,13 @@ class CanvasGraph(tk.Canvas):
         self.drawDayRange()
         self.DrawMedicine()
 
-        if self.showGrid:
+        if Global.showGrid:
             self.showGridLines()
 
     def showGridLines(self):
-        # TODO: togle grid line button function
-
         grid_lines = []
-        top = Var.graphCanvas_padding
-        bottom = self.height - Var.graphCanvas_padding
+        top = Var.padding
+        bottom = self.height - Var.padding
         for i in range(len(self.date_range) + 1):
             x = self.day_x(i)
             line = self.create_line(
@@ -345,11 +336,12 @@ class CanvasGraph(tk.Canvas):
         self.row_idx = 1
         for j in range(self.total_rows - 1):
 
+            pos_y = self.row_y() + 10
             line = self.create_line(
                 left,
-                self.row_y(),
+                pos_y,
                 right,
-                self.row_y(),
+                pos_y,
                 fill="#ccc",
                 dash=(2, 4),
             )

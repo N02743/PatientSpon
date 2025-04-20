@@ -157,8 +157,8 @@ class GraphConfigFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(
             parent,
-            padx=Var.configFrame_padding,
-            pady=Var.configFrame_padding,
+            padx=Var.padding,
+            pady=Var.padding,
         )
         self.pack(side="top", fill="x")
 

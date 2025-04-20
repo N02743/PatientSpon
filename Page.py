@@ -1,30 +1,34 @@
 import tkinter as tk
 
 import Data.getData as get
-import File.Bar as Bar
+import File.Frame as Frame
 import Var.GlobalVariable as Var
 
 
 class showGraph(tk.Tk):
-    def __init__(self, parent, patient_id):
-        # TODO: show graph page class
-
+    def __init__(self, parent, patient_id, patient_page):
         # Get data
         PATIENT_DATA = get.get_patient_data_by_HN(patient_id)
 
         # Nav Frame
-        navFrame = Bar.NavFrame(parent)
-
-        banner = Bar.BannerFrame(navFrame)
-        patient = Bar.PatientFrame(navFrame, PT=PATIENT_DATA)
+        navFrame = Frame.NavFrame(
+            parent,
+            PT=PATIENT_DATA,
+            patient_page=patient_page,
+        )
 
         # Content Frame
-        contentFrame = Bar.ContentFrame(parent)
-
-        config = Bar.GraphConfigFrame(contentFrame)
-
-        # Graph show
-        labTest = Bar.LabTestFrame(
-            contentFrame,
+        contentFrame = Frame.ContentFrame(
+            parent,
             patient_data=PATIENT_DATA,
         )
+
+
+class patientList(tk.Tk):
+    def __init__(self, parent, graph_page):
+        patientList = Frame.PatientListButton(parent, graph_page)
+
+        # TODO: main Nav Frame
+
+        # TODO: Patient list frame
+        pass

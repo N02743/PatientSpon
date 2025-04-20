@@ -18,10 +18,7 @@ def findDays(start, end):
     ).days
 
 
-def get_patient_data_by_HN(HN):
-    # TODO: send data from previous page
-
-    # TODO: loading patient data
+def get_patient_list():
     patientCSV = pd.read_csv(
         "Data/Random/PatientData.csv",
         dtype={
@@ -31,9 +28,20 @@ def get_patient_data_by_HN(HN):
         },
     )
 
-    # dummy data
+    return patientCSV
+
+
+def get_patient_data_by_HN(HN):
+    patientCSV = pd.read_csv(
+        "Data/Random/PatientData.csv",
+        dtype={
+            "HN": str,
+            "AN": str,
+            "PhoneNumber": str,
+        },
+    )
+
     patient = patientCSV[patientCSV["HN"] == HN]
-    # print(patient)
     PT = Class.Patient(patientPD=patient)
 
     return PT
@@ -109,8 +117,6 @@ def get_medicineUsage_data_by_HN(HN, start, end):
 
     medicineUsage = medicineUsageCSV[medicineUsageCSV["HN"] == HN]
 
-    # print(medicineUsage)
-
     medicineDict = {}
 
     medName = medicineUsage["MedName"].unique()
@@ -120,12 +126,4 @@ def get_medicineUsage_data_by_HN(HN, start, end):
         endDate = medUsageInName["End"].values[0]
         medicineDict[med] = {"start": startDate, "end": endDate}
 
-    # # TODO: medicine usage
-    # medicine_usage = [
-    #     {"name": "Paracetamol", "start": "01/03/2025", "end": "06/03/2025"},
-    #     {"name": "Amoxicillin", "start": "02/03/2025", "end": "04/03/2025"},
-    #     {"name": "Iblutofel", "start": "02/03/2025", "end": "07/03/2025"},
-    # ]
-
-    # return medicine_usage
     return medicineDict

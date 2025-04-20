@@ -8,6 +8,8 @@ import Var.Font as Font
 import File.Widget as Widget
 import File.Canvas as Canvas
 
+import Data.getData as get
+
 
 def toggleGrid():
     Global.showGrid = not Global.showGrid
@@ -167,7 +169,7 @@ class GraphConfigFrame(tk.Frame):
 
 
 class NavFrame(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, PT, patient_page):
         super().__init__(
             parent,
             bg=Color.navFrameBG,
@@ -179,9 +181,25 @@ class NavFrame(tk.Frame):
         )
         self.pack_propagate(False)
 
+        tk.Button(
+            self,
+            text="↶",
+            font=("Arial", 30, "bold"),
+            fg="white",
+            background="red",
+            width=2,
+            command=lambda: patient_page(),
+        ).pack(
+            side="left",
+            fill=tk.Y,
+        )
+
+        banner = BannerFrame(self)
+        patient = PatientFrame(self, PT=PT)
+
 
 class ContentFrame(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, patient_data):
         super().__init__(
             parent,
             bg=Color.contentFrameBG,
@@ -190,6 +208,13 @@ class ContentFrame(tk.Frame):
             side="top",
             expand=True,
             fill="both",
+        )
+
+        config = GraphConfigFrame(self)
+
+        labTest = LabTestFrame(
+            self,
+            patient_data=patient_data,
         )
 
 
@@ -208,3 +233,19 @@ class LabTestFrame(tk.Frame):
             # date_range=date_range,
             patient_data=patient_data,
         )
+
+
+class PatientListButton(tk.Frame):
+    def __init__(self, parent, command=None):
+        super().__init__(parent)
+        self.pack()
+
+        patientList = get.get_patient_list()
+
+        for patient in patientList.itertuples():
+            buttonText = f'[HN:{patient.HN}]    [AN:{patient.AN}] Ward: {patient.Ward}, Bed: {patient.Bed} "{patient.Name}"'
+            tk.Button(
+                self,
+                text=buttonText,
+                command=lambda HN=patient.HN: command(HN),
+            ).pack()

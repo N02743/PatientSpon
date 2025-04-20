@@ -7,14 +7,15 @@ class Patient:
         self,
         patientPD,
     ):
-        self.HN = patientPD.loc[0, "HN"]
-        self.AN = patientPD.loc[0, "AN"]
-        self.Ward = patientPD.loc[0, "Ward"]
-        self.Bed = patientPD.loc[0, "Bed"]
-        self.Sex = patientPD.loc[0, "Sex"]
-        self.Name = patientPD.loc[0, "Name"]
-        self.Age = patientPD.loc[0, "Age"]
-        self.PhoneNumber = patientPD.loc[0, "PhoneNumber"]
+        print("Patient =>", patientPD)
+        self.HN = patientPD.iloc[0]["HN"]
+        self.AN = patientPD.iloc[0]["AN"]
+        self.Ward = patientPD.iloc[0]["Ward"]
+        self.Bed = patientPD.iloc[0]["Bed"]
+        self.Sex = patientPD.iloc[0]["Sex"]
+        self.Name = patientPD.iloc[0]["Name"]
+        self.Age = patientPD.iloc[0]["Age"]
+        self.PhoneNumber = patientPD.iloc[0]["PhoneNumber"]
 
         # self.LabResults = get.get_labResults_data_by_HN(self.HN)
         # self.MedicineUsage = get.get_medicineUsage_data_by_HN(self.HN)

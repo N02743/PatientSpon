@@ -231,7 +231,6 @@ class CanvasGraph(tk.Canvas):
             else:
                 x2 = self.day_x(end_idx)
 
-            # TODO: draw timeline add arrow if out of bound
             self.drawTimeline(x1, x2, timelinePositionY)
 
             self.row_idx += 1

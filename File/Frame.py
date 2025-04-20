@@ -83,20 +83,44 @@ class BannerFrame(tk.Frame):
 
 class PatientFrame(tk.Frame):
     def __init__(self, parent, PT):
-        super().__init__(parent)
-        self.pack()
+        super().__init__(
+            parent,
+            bg="green",
+        )
+        self.pack(
+            fill=tk.BOTH,
+            expand=True,
+        )
 
         InfoTextField = []
+        rowList = [0, 0, 0, 0, 1, 1, 1, 1]
+        columnList = [1, 2, 3, 4, 1, 2, 3, 4]
 
-        for label in Global.LabelList:
+        weightList = [10, 6, 3, 3]
+
+        for i, label in enumerate(Global.LabelList):
             # print(label, getattr(PT, label))
             InfoTextField.append(
-                Widget.TextfieldInput(
+                Widget.Textfield(
                     self,
                     label=label,
                     info=getattr(PT, label),
+                    row=rowList[i],
+                    # row=0,
+                    column=columnList[i],
+                    # column=i,
                 ),
             )
+
+        for i in range(4):
+            self.grid_columnconfigure(
+                i + 1,
+                # weight=weightList[i],
+                weight=(i + 1) * 2,
+            )
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
 
 
 class ConfigButtonFrame(tk.Frame):

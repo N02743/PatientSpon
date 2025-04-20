@@ -2,18 +2,61 @@ import tkinter as tk
 
 import Var.Color as Color
 import Var.Variable as Var
+import Var.Font as Font
 
 
-class TextfieldInput(tk.Frame):
-    def __init__(self, parent, label, info):
+class Textfield(tk.Frame):
+    def __init__(
+        self,
+        parent,
+        label,
+        info,
+        row,
+        column,
+    ):
         super().__init__(parent)
-        self.pack(side="left")
+        self.grid(
+            row=row,
+            column=column,
+            sticky="nsew",
+            padx=5,
+            pady=5,
+        )
+        self.pack_propagate(False)
 
-        tk.Label(self, text=label).pack(side="left")
-        entry = tk.Entry(self)
+        # TODO: Font size responsive => grid?
+        label = tk.Label(
+            self,
+            text=label,
+            # font=Font.textField,
+        )
+        label.pack(side="left")
+        # label.grid(
+        #     row=row,
+        #     column=0,
+        #     sticky="ew",
+        #     padx=5,
+        #     pady=5,
+        # )
+
+        entry = tk.Entry(
+            self,
+            # font=Font.textField,
+        )
         entry.insert(0, info)
         entry.config(state="disabled")
-        entry.pack(side="left")
+        entry.pack(
+            side="left",
+            # fill="x",
+            # expand=True,
+        )
+        # entry.grid(
+        #     row=row,
+        #     column=1,
+        #     sticky="ew",
+        #     padx=5,
+        #     pady=5,
+        # )
 
 
 class ButtonInput(tk.Button):

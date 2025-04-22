@@ -20,7 +20,7 @@ class showGraph(tk.Tk):
         PATIENT_DATA = get.get_patient_data_by_HN(patient_id)
 
         # Nav Frame
-        navFrame = Frame.NavFrame(
+        navFrame = Frame.GraphNavFrame(
             parent,
             PT=PATIENT_DATA,
             patient_page=patient_page,
@@ -34,10 +34,14 @@ class showGraph(tk.Tk):
 
 
 class patientList(tk.Tk):
-    def __init__(self, parent, graph_page):
-        patientList = Frame.PatientListButton(parent, graph_page)
+    def __init__(
+        self,
+        parent,
+        graph_page,
+    ):
 
         # TODO: main Nav Frame
+        navFrame = Frame.PatientListNavFrame(parent)
 
         # TODO: Patient list frame
-        pass
+        patientList = Frame.PatientListFrame(parent, graph_page)

@@ -248,7 +248,10 @@ class GraphConfigFrame(tk.Frame):
 
 
 class NavFrame(tk.Frame):
-    def __init__(self, parent, PT, patient_page):
+    def __init__(
+        self,
+        parent,
+    ):
         super().__init__(
             parent,
             bg=Color.navFrameBG,
@@ -259,6 +262,16 @@ class NavFrame(tk.Frame):
             fill="x",
         )
         self.pack_propagate(False)
+
+
+class GraphNavFrame(NavFrame):
+    def __init__(
+        self,
+        parent,
+        PT,
+        patient_page,
+    ):
+        super().__init__(parent)
 
         tk.Button(
             self,
@@ -275,6 +288,14 @@ class NavFrame(tk.Frame):
 
         banner = BannerFrame(self)
         patient = PatientFrame(self, PT=PT)
+
+
+class PatientListNavFrame(NavFrame):
+    def __init__(
+        self,
+        parent,
+    ):
+        super().__init__(parent)
 
 
 class ContentFrame(tk.Frame):
@@ -314,17 +335,101 @@ class CanvasFrame(tk.Frame):
         GLBFunc.CanvasRedrawSet(canvas.redraw)
 
 
-class PatientListButton(tk.Frame):
-    def __init__(self, parent, command=None):
+class PatientHeaderFrame(tk.Frame):
+    def __init__(self, parent):
         super().__init__(parent)
-        self.pack()
+        self.pack(fill="x")
+
+
+class PatientRowFrame(tk.Frame):
+    def __init__(
+        self,
+        parent,
+        patient,
+        row,
+    ):
+        super().__init__(
+            parent,
+            background="red",
+        )
+
+        self.grid(
+            row=row,
+            column=0,
+            sticky="nsew",
+            padx=5,
+            pady=5,
+        )
+
+        weight = [5, 5, 1, 1, 7]
+
+        self.grid_rowconfigure(0, weight=1)
+
+        labelList = Global.LabelList[:6]
+        del labelList[4]
+
+        for column, label in enumerate(labelList):
+            cell = tk.Label(
+                self,
+                text=getattr(patient, label),
+                background="blue",
+                # anchor="w",
+                borderwidth=1,
+                relief="solid",
+            )
+            cell.grid(
+                row=0,
+                column=column,
+                sticky="nsew",
+                padx=5,
+                pady=5,
+            )
+            cell.bind("<Button-1>", lambda event: self.event_generate("<Button-1>"))
+            cell.bind("<Enter>", lambda event: self.event_generate("<Enter>"))
+            cell.bind("<Leave>", lambda event: self.event_generate("<Leave>"))
+
+        for column in range(5):
+            self.grid_columnconfigure(
+                column,
+                weight=weight[column],
+                uniform="group1",
+            )
+
+
+class PatientListFrame(tk.Frame):
+    def __init__(
+        self,
+        parent,
+        graph_page=None,
+    ):
+        super().__init__(parent)
+        self.pack(
+            fill=tk.BOTH,
+            expand=True,
+        )
 
         patientList = get.get_patient_list()
 
-        for patient in patientList.itertuples():
-            buttonText = f'[HN:{patient.HN}]    [AN:{patient.AN}] Ward: {patient.Ward}, Bed: {patient.Bed} "{patient.Name}"'
-            tk.Button(
+        for row, patient in enumerate(patientList.itertuples()):
+            # TODO:
+            patientRow = PatientRowFrame(
                 self,
-                text=buttonText,
-                command=lambda HN=patient.HN: command(HN),
-            ).pack()
+                patient=patient,
+                row=row,
+            )
+            patientRow.bind(
+                "<Button-1>",
+                lambda event, HN=patient.HN: graph_page(HN),
+            )
+            patientRow.bind(
+                "<Enter>",
+                lambda event, ptR=patientRow: ptR.config(bg="green"),
+            )
+            patientRow.bind(
+                "<Leave>",
+                lambda event, ptR=patientRow: ptR.config(bg="red"),
+            )
+
+            self.grid_rowconfigure(row, weight=1)
+
+        self.grid_columnconfigure(0, weight=1)

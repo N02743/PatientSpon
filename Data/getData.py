@@ -42,6 +42,13 @@ def get_patient_data_by_HN(HN):
     )
 
     patient = patientCSV[patientCSV["HN"] == HN]
+
+    if patient is None:
+        print("Patient None", HN)
+        return None
+    else:
+        print("DEBUG PATIENT", patient)
+
     PT = Class.Patient(patientPD=patient)
 
     return PT

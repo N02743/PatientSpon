@@ -11,6 +11,7 @@ import File.Canvas as Canvas
 import Data.getData as get
 
 import File.GlobalFunction as GLBFunc
+from tkinter import messagebox
 
 
 def buttonColor(variable, check):
@@ -30,83 +31,54 @@ def buttonColor(variable, check):
 
 
 def toggleGrid():
-    # Global.showGrid = not Global.showGrid
-    global showGrid
-    showGrid = not showGrid
-    showGridButton.config(
-        bg=buttonColor(
-            showGrid,
-            Global.showGrid,
-        ),
-    )
-    print("toggle grid =>", showGrid)
+    showGridButton.onClick()
+
+    print("toggle grid")
 
 
 def toggleLabTest():
-    # Global.showLabTest = not Global.showLabTest
-    global showLab
-    showLab = not showLab
-    showLabButton.config(
-        bg=buttonColor(
-            showLab,
-            Global.showLabTest,
-        ),
-    )
-    print("toggle Lab test =>", showLab)
+    showLabButton.onClick()
+
+    print("toggle Lab test")
 
 
 def toggleMedUsage():
-    # Global.showMedUsage = not Global.showMedUsage
-    global showMed
-    showMed = not showMed
-    showMedButton.config(
-        bg=buttonColor(
-            showMed,
-            Global.showMedUsage,
-        ),
-    )
-    print("toggle Medicine Usage =>", showMed)
+    showMedButton.onClick()
+
+    print("toggle Medicine Usage")
 
 
 def addNewLabTest():
     # TODO:
+    messagebox.showinfo(
+        "Add new Lab Test",
+        "text field for add new Lab Test",
+    )
     print("Add New Lab Test")
 
 
 def addNewMedUsage():
     # TODO:
+    messagebox.showinfo(
+        "Add new Medicine Usage",
+        "text field for add new Medicine Usage",
+    )
     print("Add New Medicine Usage")
 
 
 def configTimeTick():
     # TODO:
+    messagebox.showinfo(
+        "Add new Time Tick",
+        "text field for add new Time Tick",
+    )
     print("Config Time Tick")
 
 
 def confirmButtonFunction():
-    # Canvas.CanvasGraph.redraw()
-    Global.showGrid = showGrid
-    Global.showLabTest = showLab
-    Global.showMedUsage = showMed
-
-    showGridButton.config(
-        bg=buttonColor(
-            showGrid,
-            Global.showGrid,
-        ),
-    )
-    showLabButton.config(
-        bg=buttonColor(
-            showLab,
-            Global.showLabTest,
-        ),
-    )
-    showMedButton.config(
-        bg=buttonColor(
-            showMed,
-            Global.showMedUsage,
-        ),
-    )
+    Global.showGrid = showGridButton.onConfirm()
+    Global.showLabTest = showLabButton.onConfirm()
+    Global.showMedUsage = showMedButton.onConfirm()
 
     GLBFunc.CanvasRedraw()
 
@@ -114,6 +86,10 @@ def confirmButtonFunction():
 
 
 def resetButtonFunction():
+    showGridButton.onReset()
+    showLabButton.onReset()
+    showMedButton.onReset()
+
     print("Reset Button")
 
 
@@ -220,29 +196,31 @@ class ConfigButtonFrame(tk.Frame):
 
         # TODO: Config Button
         global showLabButton
-        global showLab
-        showLab = Global.showLabTest
+        # global showLab
+        # showLab = Global.showLabTest
         showLabButton = Widget.ButtonInput(
             self,
             text="Show Lab test",
             command=lambda: toggleLabTest(),
-            bgColor=buttonColor(
-                showLab,
-                Global.showLabTest,
-            ),
+            var=Global.showLabTest,
+            # bgColor=buttonColor(
+            #     showLab,
+            #     Global.showLabTest,
+            # ),
         )
 
         global showMedButton
-        global showMed
-        showMed = Global.showMedUsage
+        # global showMed
+        # showMed = Global.showMedUsage
         showMedButton = Widget.ButtonInput(
             self,
             text="Show Medication",
             command=lambda: toggleMedUsage(),
-            bgColor=buttonColor(
-                showMed,
-                Global.showMedUsage,
-            ),
+            var=Global.showMedUsage,
+            # bgColor=buttonColor(
+            #     showMed,
+            #     Global.showMedUsage,
+            # ),
         )
 
         addLabButton = Widget.ButtonInput(
@@ -263,16 +241,17 @@ class ConfigButtonFrame(tk.Frame):
         )
 
         global showGridButton
-        global showGrid
-        showGrid = Global.showGrid
+        # global showGrid
+        # showGrid = Global.showGrid
         showGridButton = Widget.ButtonInput(
             self,
             text="Show grid",
             command=lambda: toggleGrid(),
-            bgColor=buttonColor(
-                showGrid,
-                Global.showGrid,
-            ),
+            var=Global.showGrid,
+            # bgColor=buttonColor(
+            #     showGrid,
+            #     Global.showGrid,
+            # ),
         )
 
 
@@ -281,15 +260,12 @@ class ConfirmFrame(tk.Frame):
         super().__init__(parent)
         self.pack(side="right")
 
-        # TODO: Confirm and Reset
-        resetButton = Widget.ResetButton(
+        Widget.ResetButton(
             self,
             command=lambda: resetButtonFunction(),
         )
-        confirmButton = Widget.ConfirmButton(
+        Widget.ConfirmButton(
             self,
-            # command=lambda: confirmButtonFunction(),
-            # TODO:
             command=lambda: confirmButtonFunction(),
         )
 

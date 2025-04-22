@@ -13,7 +13,10 @@ import Var.GlobalVariable as Global
 def showImageModal(i):
     # TODO: show Image modal
     pictureDirectory = "Data/Image"
-    messagebox.showinfo("Image", f"Show image for {i}")
+    messagebox.showinfo(
+        "Image",
+        f"Show image for {i}",
+    )
 
 
 class CanvasGraph(tk.Canvas):

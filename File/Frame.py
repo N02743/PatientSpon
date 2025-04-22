@@ -13,26 +13,59 @@ import Data.getData as get
 import File.GlobalFunction as GLBFunc
 
 
-def buttonColor(variable):
-    return Color.buttonTrueBG if variable else Color.buttonFalseBG
+def buttonColor(variable, check):
+    # TODO: Weird
+    if variable:
+        if variable == check:
+            return Color.buttonTrueBG
+        else:
+            return Color.buttonWaitTrueBG
+    else:
+        if variable == check:
+            return Color.buttonFalseBG
+        else:
+            return Color.buttonWaitFalseBG
+
+    # return Color.buttonTrueBG if variable else Color.buttonFalseBG
 
 
 def toggleGrid():
-    Global.showGrid = not Global.showGrid
-    showGridButton.config(bg=buttonColor(Global.showGrid))
-    print("toggle grid =>", Global.showGrid)
+    # Global.showGrid = not Global.showGrid
+    global showGrid
+    showGrid = not showGrid
+    showGridButton.config(
+        bg=buttonColor(
+            showGrid,
+            Global.showGrid,
+        ),
+    )
+    print("toggle grid =>", showGrid)
 
 
 def toggleLabTest():
-    Global.showLabTest = not Global.showLabTest
-    showLabButton.config(bg=buttonColor(Global.showLabTest))
-    print("toggle Lab test =>", Global.showLabTest)
+    # Global.showLabTest = not Global.showLabTest
+    global showLab
+    showLab = not showLab
+    showLabButton.config(
+        bg=buttonColor(
+            showLab,
+            Global.showLabTest,
+        ),
+    )
+    print("toggle Lab test =>", showLab)
 
 
 def toggleMedUsage():
-    Global.showMedUsage = not Global.showMedUsage
-    showMedButton.config(bg=buttonColor(Global.showMedUsage))
-    print("toggle Medicine Usage =>", Global.showMedUsage)
+    # Global.showMedUsage = not Global.showMedUsage
+    global showMed
+    showMed = not showMed
+    showMedButton.config(
+        bg=buttonColor(
+            showMed,
+            Global.showMedUsage,
+        ),
+    )
+    print("toggle Medicine Usage =>", showMed)
 
 
 def addNewLabTest():
@@ -52,6 +85,31 @@ def configTimeTick():
 
 def confirmButtonFunction():
     # Canvas.CanvasGraph.redraw()
+    Global.showGrid = showGrid
+    Global.showLabTest = showLab
+    Global.showMedUsage = showMed
+
+    showGridButton.config(
+        bg=buttonColor(
+            showGrid,
+            Global.showGrid,
+        ),
+    )
+    showLabButton.config(
+        bg=buttonColor(
+            showLab,
+            Global.showLabTest,
+        ),
+    )
+    showMedButton.config(
+        bg=buttonColor(
+            showMed,
+            Global.showMedUsage,
+        ),
+    )
+
+    GLBFunc.CanvasRedraw()
+
     print("Confirm Button")
 
 
@@ -162,18 +220,29 @@ class ConfigButtonFrame(tk.Frame):
 
         # TODO: Config Button
         global showLabButton
+        global showLab
+        showLab = Global.showLabTest
         showLabButton = Widget.ButtonInput(
             self,
             text="Show Lab test",
             command=lambda: toggleLabTest(),
-            bgColor=buttonColor(Global.showLabTest),
+            bgColor=buttonColor(
+                showLab,
+                Global.showLabTest,
+            ),
         )
+
         global showMedButton
+        global showMed
+        showMed = Global.showMedUsage
         showMedButton = Widget.ButtonInput(
             self,
             text="Show Medication",
             command=lambda: toggleMedUsage(),
-            bgColor=buttonColor(Global.showMedUsage),
+            bgColor=buttonColor(
+                showMed,
+                Global.showMedUsage,
+            ),
         )
 
         addLabButton = Widget.ButtonInput(
@@ -192,12 +261,18 @@ class ConfigButtonFrame(tk.Frame):
             text="Time tick",
             command=lambda: configTimeTick(),
         )
+
         global showGridButton
+        global showGrid
+        showGrid = Global.showGrid
         showGridButton = Widget.ButtonInput(
             self,
             text="Show grid",
             command=lambda: toggleGrid(),
-            bgColor=buttonColor(Global.showGrid),
+            bgColor=buttonColor(
+                showGrid,
+                Global.showGrid,
+            ),
         )
 
 
@@ -215,7 +290,7 @@ class ConfirmFrame(tk.Frame):
             self,
             # command=lambda: confirmButtonFunction(),
             # TODO:
-            command=lambda: GLBFunc.CanvasRedraw(),
+            command=lambda: confirmButtonFunction(),
         )
 
 

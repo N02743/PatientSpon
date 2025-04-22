@@ -11,6 +11,6 @@ patientInfoFirstRowBG = "yellow"
 patientInfoSecondRowBG = "gold"
 
 buttonTrueBG = "green"
-buttonWaitTrueBG = "green2"
+buttonWaitTrueBG = "pale green"
 buttonFalseBG = "red"
-buttonWaitFalseBG = "red2"
+buttonWaitFalseBG = "yellow"

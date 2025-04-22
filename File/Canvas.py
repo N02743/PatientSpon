@@ -305,6 +305,7 @@ class CanvasGraph(tk.Canvas):
 
         self.row_idx = 0
 
+        # TODO: show label Lab Test, Medicine
         self.createImageButton()
         self.drawLabResults()
         self.drawDayRange()

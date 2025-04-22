@@ -22,41 +22,21 @@ class Textfield(tk.Frame):
             padx=5,
             pady=5,
         )
-        self.pack_propagate(False)
+        # self.pack_propagate(False)
 
         # TODO: Font size responsive => grid?
         label = tk.Label(
             self,
             text=label,
-            # font=Font.textField,
         )
         label.pack(side="left")
-        # label.grid(
-        #     row=row,
-        #     column=0,
-        #     sticky="ew",
-        #     padx=5,
-        #     pady=5,
-        # )
 
-        entry = tk.Entry(
-            self,
-            # font=Font.textField,
-        )
+        entry = tk.Entry(self)
         entry.insert(0, info)
         entry.config(state="disabled")
         entry.pack(
-            side="left",
-            # fill="x",
-            # expand=True,
+            side="right",
         )
-        # entry.grid(
-        #     row=row,
-        #     column=1,
-        #     sticky="ew",
-        #     padx=5,
-        #     pady=5,
-        # )
 
 
 class ButtonInput(tk.Button):

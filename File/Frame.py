@@ -92,35 +92,55 @@ class PatientFrame(tk.Frame):
             expand=True,
         )
 
-        InfoTextField = []
         rowList = [0, 0, 0, 0, 1, 1, 1, 1]
-        columnList = [1, 2, 3, 4, 1, 2, 3, 4]
+        columnList = [0, 1, 2, 3, 0, 1, 2, 3]
+        weightList = [4, 4, 1, 1, 1, 6, 1, 4]
 
-        weightList = [10, 6, 3, 3]
+        frame = []
+        frame.append(
+            tk.Frame(
+                self,
+                bg="yellow",
+            )
+        )
+        frame.append(
+            tk.Frame(
+                self,
+                bg="gold",
+            )
+        )
+
+        frame[0].pack(
+            fill=tk.BOTH,
+            expand=True,
+        )
+        frame[1].pack(
+            fill=tk.BOTH,
+            expand=True,
+        )
+
+        textField = [[], []]
 
         for i, label in enumerate(Global.LabelList):
-            # print(label, getattr(PT, label))
-            InfoTextField.append(
+            print(rowList[i], columnList[i], label)
+            textField[rowList[i]].append(
                 Widget.Textfield(
-                    self,
+                    frame[rowList[i]],
                     label=label,
                     info=getattr(PT, label),
                     row=rowList[i],
-                    # row=0,
                     column=columnList[i],
-                    # column=i,
                 ),
             )
-
-        for i in range(4):
-            self.grid_columnconfigure(
-                i + 1,
-                # weight=weightList[i],
-                weight=(i + 1) * 2,
+        w = [1, 2, 1, 3]
+        for i in range(8):
+            frame[rowList[i]].grid_columnconfigure(
+                rowList[i],
+                weight=weightList[i],
             )
 
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_rowconfigure(1, weight=1)
+        frame[0].grid_rowconfigure(0, weight=1)
+        frame[1].grid_rowconfigure(1, weight=1)
 
 
 class ConfigButtonFrame(tk.Frame):

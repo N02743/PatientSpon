@@ -20,7 +20,7 @@ def findDays(start, end):
 
 def get_patient_list():
     patientCSV = pd.read_csv(
-        "Data/Random/PatientData.csv",
+        "Data/PatientData.csv",
         dtype={
             "HN": str,
             "AN": str,
@@ -33,7 +33,7 @@ def get_patient_list():
 
 def get_patient_data_by_HN(HN):
     patientCSV = pd.read_csv(
-        "Data/Random/PatientData.csv",
+        "Data/PatientData.csv",
         dtype={
             "HN": str,
             "AN": str,

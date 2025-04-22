@@ -15,6 +15,7 @@ class showGraph(tk.Tk):
         Global.showGrid = True
         Global.showLabTest = True
         Global.showMedUsage = True
+
         # Get data
         PATIENT_DATA = get.get_patient_data_by_HN(patient_id)
 

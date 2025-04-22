@@ -2,6 +2,7 @@ import tkinter as tk
 import Page
 import Var
 import File.Frame as Frame
+from tkinter import messagebox
 
 
 def graph_page(ID):
@@ -25,10 +26,19 @@ def patient_page():
     )
 
 
+def onClosing():
+    if messagebox.askokcancel("Quit", "Do you really want to quit?"):
+        app.destroy()  # ปิดจริง
+    else:
+        print("Close canceled")
+
+
 app = tk.Tk()
 
 app.title("Patient Spon form program")
 app.state("zoomed")
+
+app.protocol("WM_DELETE_WINDOW", onClosing)
 
 app.update_idletasks()
 Var.window_width = app.winfo_width()

@@ -92,21 +92,19 @@ class PatientFrame(tk.Frame):
             expand=True,
         )
 
-        rowList = [0, 0, 0, 0, 1, 1, 1, 1]
-        columnList = [0, 1, 2, 3, 0, 1, 2, 3]
-        weightList = [4, 4, 1, 1, 1, 6, 1, 4]
+        weightList = [15, 15, 1, 1, 1, 15, 1, 4]
 
         frame = []
         frame.append(
             tk.Frame(
                 self,
-                bg="yellow",
+                bg=Color.patientInfoFirstRowBG,
             )
         )
         frame.append(
             tk.Frame(
                 self,
-                bg="gold",
+                bg=Color.patientInfoSecondRowBG,
             )
         )
 
@@ -122,20 +120,25 @@ class PatientFrame(tk.Frame):
         textField = [[], []]
 
         for i, label in enumerate(Global.LabelList):
-            print(rowList[i], columnList[i], label)
-            textField[rowList[i]].append(
+            row = 0 if i < 4 else 1
+            column = i if i < 4 else i - 4
+
+            textField[row].append(
                 Widget.Textfield(
-                    frame[rowList[i]],
+                    frame[row],
                     label=label,
                     info=getattr(PT, label),
-                    row=rowList[i],
-                    column=columnList[i],
+                    row=row,
+                    column=column,
                 ),
             )
-        w = [1, 2, 1, 3]
+
         for i in range(8):
-            frame[rowList[i]].grid_columnconfigure(
-                rowList[i],
+            row = 0 if i < 4 else 1
+            column = i if i < 4 else i - 4
+
+            frame[row].grid_columnconfigure(
+                column,
                 weight=weightList[i],
             )
 

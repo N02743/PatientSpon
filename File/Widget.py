@@ -22,7 +22,6 @@ class Textfield(tk.Frame):
             padx=5,
             pady=5,
         )
-        # self.pack_propagate(False)
 
         # TODO: Font size responsive => grid?
         label = tk.Label(

@@ -6,3 +6,6 @@ subLabelBG = "gray"
 
 confirmBG = "green2"
 resetBG = "gold"
+
+patientInfoFirstRowBG = "yellow"
+patientInfoSecondRowBG = "gold"

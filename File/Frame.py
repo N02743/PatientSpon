@@ -10,20 +10,29 @@ import File.Canvas as Canvas
 
 import Data.getData as get
 
+import File.GlobalFunction as GLBFunc
+
+
+def buttonColor(variable):
+    return Color.buttonTrueBG if variable else Color.buttonFalseBG
+
 
 def toggleGrid():
     Global.showGrid = not Global.showGrid
-    print("toggle grid =", Global.showGrid)
+    showGridButton.config(bg=buttonColor(Global.showGrid))
+    print("toggle grid =>", Global.showGrid)
 
 
 def toggleLabTest():
     Global.showLabTest = not Global.showLabTest
-    print("toggle Lab test =", Global.showLabTest)
+    showLabButton.config(bg=buttonColor(Global.showLabTest))
+    print("toggle Lab test =>", Global.showLabTest)
 
 
 def toggleMedUsage():
     Global.showMedUsage = not Global.showMedUsage
-    print("toggle Medicine Usage =", Global.showMedUsage)
+    showMedButton.config(bg=buttonColor(Global.showMedUsage))
+    print("toggle Medicine Usage =>", Global.showMedUsage)
 
 
 def addNewLabTest():
@@ -152,15 +161,19 @@ class ConfigButtonFrame(tk.Frame):
         self.pack(side="left")
 
         # TODO: Config Button
+        global showLabButton
         showLabButton = Widget.ButtonInput(
             self,
             text="Show Lab test",
             command=lambda: toggleLabTest(),
+            bgColor=buttonColor(Global.showLabTest),
         )
+        global showMedButton
         showMedButton = Widget.ButtonInput(
             self,
             text="Show Medication",
             command=lambda: toggleMedUsage(),
+            bgColor=buttonColor(Global.showMedUsage),
         )
 
         addLabButton = Widget.ButtonInput(
@@ -179,10 +192,12 @@ class ConfigButtonFrame(tk.Frame):
             text="Time tick",
             command=lambda: configTimeTick(),
         )
+        global showGridButton
         showGridButton = Widget.ButtonInput(
             self,
             text="Show grid",
             command=lambda: toggleGrid(),
+            bgColor=buttonColor(Global.showGrid),
         )
 
 
@@ -198,7 +213,9 @@ class ConfirmFrame(tk.Frame):
         )
         confirmButton = Widget.ConfirmButton(
             self,
-            command=lambda: confirmButtonFunction(),
+            # command=lambda: confirmButtonFunction(),
+            # TODO:
+            command=lambda: GLBFunc.CanvasRedraw(),
         )
 
 
@@ -257,19 +274,18 @@ class ContentFrame(tk.Frame):
             fill="both",
         )
 
-        config = GraphConfigFrame(self)
+        configFrame = GraphConfigFrame(self)
 
-        labTest = LabTestFrame(
+        canvasFrame = CanvasFrame(
             self,
             patient_data=patient_data,
         )
 
 
-class LabTestFrame(tk.Frame):
+class CanvasFrame(tk.Frame):
     def __init__(
         self,
         parent,
-        # date_range,
         patient_data,
     ):
         super().__init__(parent)
@@ -277,9 +293,10 @@ class LabTestFrame(tk.Frame):
 
         canvas = Canvas.CanvasGraph(
             self,
-            # date_range=date_range,
             patient_data=patient_data,
         )
+
+        GLBFunc.CanvasRedrawSet(canvas.redraw)
 
 
 class PatientListButton(tk.Frame):

@@ -9,9 +9,6 @@ from tkinter import messagebox
 import Data.getData as get
 import Var.GlobalVariable as Global
 
-# TODO:
-# self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
-
 
 def showImageModal(i):
     # TODO: show Image modal
@@ -41,8 +38,8 @@ class CanvasGraph(tk.Canvas):
         return self.label_width + index * self.day_width + self.day_width // 2
 
     # return y position for element in graph at row = row_idx
-    def row_y(self):
-        return self.canvas_padding + self.row_idx * self.row_height
+    def row_y(self, index):
+        return self.canvas_padding + index * self.row_height
 
     def setVariableFromFile(self):
         self.label_width = Var.graphLabel_width
@@ -56,7 +53,6 @@ class CanvasGraph(tk.Canvas):
             end=self.endDate,
         )
 
-        # TODO: get at another position
         self.lab_results = get.get_labResults_data_by_HN(
             HN=self.patient_data.HN,
             start=self.startDate,
@@ -68,8 +64,9 @@ class CanvasGraph(tk.Canvas):
             end=self.endDate,
         )
 
-        lab_test_rows = len(self.lab_results)
-        medicine_usage_rows = len(self.medicine_usage)
+        lab_test_rows = len(self.lab_results) + 1 if Global.showLabTest else 0
+        medicine_usage_rows = len(self.medicine_usage) + 1 if Global.showMedUsage else 0
+
         self.total_rows = 1 + lab_test_rows + 1 + medicine_usage_rows
 
     def reconfig_WidthAndHeight(self):
@@ -89,12 +86,10 @@ class CanvasGraph(tk.Canvas):
         self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
 
     def createImageButton(self):
-        # TODO: create padding
-
         iterDate = self.startDate
         for i in range(len(self.date_range)):
             x = self.day_x(i)
-            y = self.row_y()
+            y = self.row_y(self.row_idx)
             btn = tk.Button(
                 self,
                 text="📷",
@@ -108,11 +103,21 @@ class CanvasGraph(tk.Canvas):
     def drawLabResults(self):
         labResults = self.lab_results
 
+        y = self.row_y(self.row_idx) + 10
+        self.create_text(
+            5,
+            y,
+            anchor="w",
+            text="Lab Test",
+            font=Font.graphLabel,
+        )
+        self.row_idx += 1
+
         for labTest in labResults.keys():
-            y = self.row_y()
+            y = self.row_y(self.row_idx) + 10
             self.create_text(
                 5,
-                y + 10,
+                y,
                 anchor="w",
                 text=labTest,
                 font=Font.graph,
@@ -127,22 +132,15 @@ class CanvasGraph(tk.Canvas):
                     x = self.day_x(i)
                     self.create_text(
                         x,
-                        y + 10,
+                        y,
                         text=str(result),
                         font=Font.graph,
                     )
             self.row_idx += 1
 
     def drawDayRange(self):
-        y = self.row_y() + 10
-        self.create_text(
-            5,
-            y,
-            anchor="w",
-            text="Day",
-            font=Font.dayRangeLabel,
-        )
         for i in range(len(self.date_range)):
+            y = self.row_y(self.row_idx) + 10
             x = self.day_x(i)
             self.create_line(
                 x,
@@ -160,7 +158,7 @@ class CanvasGraph(tk.Canvas):
             )
 
         self.create_line(
-            self.day_x(0) - Var.arrowGraph_padding,
+            5,
             y,
             self.day_x(len(self.date_range) - 1) + Var.arrowGraph_padding,
             y,
@@ -172,18 +170,28 @@ class CanvasGraph(tk.Canvas):
         self.row_idx += 1
 
     def DrawMedicine(self):
+        y = self.row_y(self.row_idx) + 10
+        self.create_text(
+            5,
+            y,
+            anchor="w",
+            text="Medicine Usage",
+            font=Font.graphLabel,
+        )
+        self.row_idx += 1
+
         for medicine in self.medicine_usage.keys():
-            y = self.row_y()
+            y = self.row_y(self.row_idx) + 10
             self.create_text(
                 5,
-                y + 10,
+                y,
                 anchor="w",
                 text=medicine,
                 font=Font.graph,
             )
 
             med = self.medicine_usage[medicine]
-            timelinePositionY = y + 10
+            timelinePositionY = y
 
             if get.findDays(self.endDate, med["start"]) > 0:
                 pos = self.day_x(get.findDays(self.startDate, self.endDate))
@@ -289,27 +297,28 @@ class CanvasGraph(tk.Canvas):
                 fill="red",
             )
 
-    def redraw(
-        self,
-        # date_range,
-    ):
+    def redraw(self):
         self.delete("all")
 
         self.setVariableFromFile()
-        # self.setVariableFromParameter(date_range)
         self.setVariableFromParameter()
 
         self.reconfig_WidthAndHeight()
 
-        # TODO: expand size calculate
+        # TODO: Make Canvas expand -> expand size calculate
+        # self.height = (self.total_rows * self.row_height) + (self.canvas_padding * 2)
 
         self.row_idx = 0
 
-        # TODO: show label Lab Test, Medicine
         self.createImageButton()
-        self.drawLabResults()
+
+        if Global.showLabTest:
+            self.drawLabResults()
+
         self.drawDayRange()
-        self.DrawMedicine()
+
+        if Global.showMedUsage:
+            self.DrawMedicine()
 
         if Global.showGrid:
             self.showGridLines()
@@ -330,23 +339,24 @@ class CanvasGraph(tk.Canvas):
             )
             grid_lines.append(line)
 
-        left = self.day_x(0)
-        right = self.day_x(len(self.date_range) - 1)
-        # TODO: Weird
-        self.row_idx = 1
-        for j in range(self.total_rows - 1):
+        left = self.day_x(0) - 20
+        right = self.day_x(len(self.date_range) - 1) + 20
 
-            pos_y = self.row_y() + 10
-            line = self.create_line(
-                left,
-                pos_y,
-                right,
-                pos_y,
-                fill="#ccc",
-                dash=(2, 4),
-            )
-            self.row_idx += 1
-            grid_lines.append(line)
+        dayRange_idx = len(self.lab_results) + 2
+        dontShowGridIndex = [0, 1, dayRange_idx, dayRange_idx + 1]
+
+        for j in range(self.total_rows):
+            if j not in dontShowGridIndex:
+                pos_y = self.row_y(j) + 10
+                line = self.create_line(
+                    left,
+                    pos_y,
+                    right,
+                    pos_y,
+                    fill="#ccc",
+                    dash=(2, 4),
+                )
+                grid_lines.append(line)
 
         for line in grid_lines:
             self.tag_lower(line)

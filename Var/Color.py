@@ -9,3 +9,8 @@ resetBG = "gold"
 
 patientInfoFirstRowBG = "yellow"
 patientInfoSecondRowBG = "gold"
+
+buttonTrueBG = "green"
+buttonWaitTrueBG = "green2"
+buttonFalseBG = "red"
+buttonWaitFalseBG = "red2"

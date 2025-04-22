@@ -8,14 +8,21 @@ def graph_page(ID):
     for widget in app.winfo_children():
         widget.destroy()
 
-    PAGE = Page.showGraph(app, ID, patient_page)
+    PAGE = Page.showGraph(
+        app,
+        ID,
+        patient_page=patient_page,
+    )
 
 
 def patient_page():
     for widget in app.winfo_children():
         widget.destroy()
 
-    PAGE = Page.patientList(app, graph_page)
+    PAGE = Page.patientList(
+        app,
+        graph_page=graph_page,
+    )
 
 
 app = tk.Tk()

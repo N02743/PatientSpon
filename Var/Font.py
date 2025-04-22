@@ -6,5 +6,6 @@ subBanner = (fontName, 15)
 textField = (fontName, 10)
 
 graph = (fontName, 10)
-dayRangeLabel = (fontName, 15, "bold")
+graphLabel = (fontName, 15, "bold")
+dayRangeLabel = (fontName, 15, "italic")
 dayRange = (fontName, 10, "bold")

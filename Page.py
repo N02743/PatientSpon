@@ -6,7 +6,12 @@ import Var.GlobalVariable as Var
 
 
 class showGraph(tk.Tk):
-    def __init__(self, parent, patient_id, patient_page):
+    def __init__(
+        self,
+        parent,
+        patient_id,
+        patient_page,
+    ):
         # Get data
         PATIENT_DATA = get.get_patient_data_by_HN(patient_id)
 

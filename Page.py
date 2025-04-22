@@ -2,7 +2,7 @@ import tkinter as tk
 
 import Data.getData as get
 import File.Frame as Frame
-import Var.GlobalVariable as Var
+import Var.GlobalVariable as Global
 
 
 class showGraph(tk.Tk):
@@ -12,6 +12,9 @@ class showGraph(tk.Tk):
         patient_id,
         patient_page,
     ):
+        Global.showGrid = True
+        Global.showLabTest = True
+        Global.showMedUsage = True
         # Get data
         PATIENT_DATA = get.get_patient_data_by_HN(patient_id)
 

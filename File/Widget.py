@@ -52,12 +52,12 @@ class Textfield(tk.Frame):
         )
 
 
-class ButtonInput(tk.Button):
+class ToggleButton(tk.Button):
     def __init__(
         self,
         parent,
         text,
-        var=None,
+        var,
     ):
         if var is None:
             bgColor = "white"
@@ -102,6 +102,52 @@ class ButtonInput(tk.Button):
     def onReset(self):
         self.isClick = False
         self.configColor()
+
+
+class AddButton(tk.Button):
+    def __init__(
+        self,
+        parent,
+        text,
+        command,
+    ):
+
+        super().__init__(
+            parent,
+            text=text,
+            command=command,
+        )
+        self.pack(
+            side="left",
+            padx=Var.padding,
+        )
+
+        # self.isClick = False
+
+    # def configColor(self):
+    #     self.config(
+    #         bg=buttonColor(
+    #             self.variable,
+    #             self.isClick,
+    #         ),
+    #     )
+
+    # def onClick(self):
+    #     self.isClick = not self.isClick
+    #     self.configColor()
+
+    # def onConfirm(self):
+    #     if self.isClick:
+    #         self.variable = not self.variable
+
+    #     self.isClick = False
+
+    #     self.configColor()
+    #     return self.variable
+
+    # def onReset(self):
+    #     self.isClick = False
+    #     self.configColor()
 
 
 class ConfirmButton(tk.Button):

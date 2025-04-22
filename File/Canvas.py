@@ -7,7 +7,7 @@ import File.Class as Class
 from tkinter import messagebox
 
 import Data.getData as get
-import Var.GlobalVariable as Global
+import Var.Global as Global
 
 
 def showImageModal(i):

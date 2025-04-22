@@ -2,7 +2,7 @@ import tkinter as tk
 
 import Data.getData as get
 import File.Frame as Frame
-import Var.GlobalVariable as Global
+import Var.Global as Global
 
 
 class showGraph(tk.Tk):

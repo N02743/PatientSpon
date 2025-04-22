@@ -3,7 +3,7 @@ import tkinter as tk
 import Var.Color as Color
 import Var.Variable as Var
 import Var.Font as Font
-import Var.GlobalVariable as Global
+import Var.Global as Global
 
 
 def buttonColor(variable, isClick):

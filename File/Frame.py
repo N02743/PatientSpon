@@ -1,6 +1,6 @@
 import tkinter as tk
 
-import Var.GlobalVariable as Global
+import Var.Global as Global
 import Var.Variable as Var
 import Var.Color as Color
 import Var.Font as Font

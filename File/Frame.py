@@ -108,6 +108,17 @@ class BannerFrame(tk.Frame):
         SubLabel.pack(side="top")
 
 
+class PageInfoFrame(tk.Label):
+    def __init__(self, parent, text):
+        super().__init__(
+            parent,
+            text=text,
+            padx=5,
+            pady=5,
+        )
+        self.pack(side="left")
+
+
 class PatientFrame(tk.Frame):
     def __init__(self, parent, PT):
         super().__init__(
@@ -120,6 +131,11 @@ class PatientFrame(tk.Frame):
         )
 
         weightList = [15, 15, 1, 1, 1, 15, 1, 4]
+
+        pageInfo = tk.Frame(
+            self,
+            bg="purple",
+        )
 
         frame = []
         frame.append(
@@ -135,6 +151,11 @@ class PatientFrame(tk.Frame):
             )
         )
 
+        pageInfo.pack(
+            fill=tk.BOTH,
+            expand=True,
+        )
+
         frame[0].pack(
             fill=tk.BOTH,
             expand=True,
@@ -144,21 +165,19 @@ class PatientFrame(tk.Frame):
             expand=True,
         )
 
-        textField = [[], []]
+        PageInfoFrame(pageInfo, text="Medication page")
 
         for i, label in enumerate(Global.LabelList):
             row = 0 if i < 4 else 1
             column = i if i < 4 else i - 4
 
-            textField[row].append(
-                Widget.Textfield(
-                    frame[row],
-                    label=label,
-                    info=getattr(PT, label),
-                    row=row,
-                    column=column,
-                ),
-            )
+            Widget.Textfield(
+                frame[row],
+                label=label,
+                info=getattr(PT, label),
+                row=0,
+                column=column,
+            ),
 
         for i in range(8):
             row = 0 if i < 4 else 1
@@ -169,8 +188,11 @@ class PatientFrame(tk.Frame):
                 weight=weightList[i],
             )
 
+        pageInfo.grid_columnconfigure(0, weight=1)
+        pageInfo.grid_rowconfigure(0, weight=1)
+
         frame[0].grid_rowconfigure(0, weight=1)
-        frame[1].grid_rowconfigure(1, weight=1)
+        frame[1].grid_rowconfigure(0, weight=1)
 
 
 class ConfigButtonFrame(tk.Frame):
@@ -290,12 +312,54 @@ class GraphNavFrame(NavFrame):
         patient = PatientFrame(self, PT=PT)
 
 
+# TODO: Remove duplicate PatientFrame
+class PatientFiltersFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            bg="green",
+        )
+        self.pack(
+            fill=tk.BOTH,
+            expand=True,
+        )
+
+        info = tk.Frame(
+            self,
+            bg="purple",
+        )
+        PageInfoFrame(info, text="Patient Info Page")
+        info.pack(
+            fill=tk.BOTH,
+            expand=True,
+        )
+
+        # TODO:
+        frame = tk.Frame(
+            self,
+            bg=Color.patientInfoSecondRowBG,
+        )
+        frame.pack(
+            fill=tk.BOTH,
+            expand=True,
+        )
+
+        info.grid_columnconfigure(0, weight=1)
+        frame.grid_columnconfigure(0, weight=1)
+
+        info.grid_rowconfigure(0, weight=1)
+        frame.grid_rowconfigure(0, weight=3)
+
+
 class PatientListNavFrame(NavFrame):
     def __init__(
         self,
         parent,
     ):
         super().__init__(parent)
+
+        banner = BannerFrame(self)
+        filter = PatientFiltersFrame(self)
 
 
 class ContentFrame(tk.Frame):

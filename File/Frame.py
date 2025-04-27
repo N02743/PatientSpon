@@ -403,8 +403,22 @@ class PatientListNavFrame(NavFrame):
     def __init__(
         self,
         parent,
+        onClosing,
     ):
         super().__init__(parent)
+
+        tk.Button(
+            self,
+            text="X",
+            font=("Arial", 30, "bold"),
+            fg="white",
+            background="red",
+            width=2,
+            command=lambda: onClosing(),
+        ).pack(
+            side="left",
+            fill=tk.Y,
+        )
 
         banner = BannerFrame(self)
         filter = PatientFiltersFrame(self)

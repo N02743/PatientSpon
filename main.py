@@ -23,6 +23,7 @@ def patient_page():
     PAGE = Page.patientList(
         app,
         graph_page=graph_page,
+        onClosing=onClosing,
     )
 
 
@@ -36,14 +37,19 @@ def onClosing():
 app = tk.Tk()
 
 app.title("Patient Spon form program")
-app.state("zoomed")
+app.attributes("-fullscreen", True)
+app.bind("<Escape>", lambda e: onClosing())
 
 app.protocol("WM_DELETE_WINDOW", onClosing)
 
 app.update_idletasks()
 Var.window_width = app.winfo_width()
 
-PAGE = Page.patientList(app, graph_page)
+PAGE = Page.patientList(
+    app,
+    graph_page=graph_page,
+    onClosing=onClosing,
+)
 
 # for develop
 # PAGE = Page.showGraph(app, "0000000000", patient_page)

@@ -38,10 +38,11 @@ class patientList(tk.Tk):
         self,
         parent,
         graph_page,
+        onClosing,
     ):
 
         # TODO: main Nav Frame
-        navFrame = Frame.PatientListNavFrame(parent)
+        navFrame = Frame.PatientListNavFrame(parent, onClosing)
 
         # TODO: Patient list frame
         # patientList = Frame.PatientListFrame(parent, graph_page)

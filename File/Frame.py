@@ -351,6 +351,54 @@ class PatientFiltersFrame(tk.Frame):
         frame.grid_rowconfigure(0, weight=3)
 
 
+class PatientContentFrame(tk.Frame):
+    def __init__(
+        self,
+        parent,
+        graph_page,
+    ):
+        super().__init__(parent)
+        self.pack(
+            fill=tk.BOTH,
+            expand=True,
+            padx=50,
+            pady=30,
+        )
+
+        # patientRow = PatientRowFrame(
+        #         self,
+        #         patient=patient,
+        #         row=row,
+        #     )
+        header = PatientHeaderFrame(self)
+        # tk.Label(self, text="Patient").pack()
+        patientList = PatientListFrame(self, graph_page)
+
+        buttom = PatientButtomFrame(self)
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=10)
+        self.grid_rowconfigure(2, weight=1)
+
+        self.grid_columnconfigure(0, weight=1)
+
+
+class PatientButtomFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.grid(
+            row=2,
+            column=0,
+            sticky="nsew",
+            padx=5,
+            pady=5,
+        )
+
+        tk.Label(self, text="Founded xx of xxx").pack(side="left")
+
+        tk.Button(self, text="Add new Patient").pack(side="right")
+
+
 class PatientListNavFrame(NavFrame):
     def __init__(
         self,
@@ -363,7 +411,11 @@ class PatientListNavFrame(NavFrame):
 
 
 class ContentFrame(tk.Frame):
-    def __init__(self, parent, patient_data):
+    def __init__(
+        self,
+        parent,
+        patient_data,
+    ):
         super().__init__(
             parent,
             bg=Color.contentFrameBG,
@@ -400,9 +452,69 @@ class CanvasFrame(tk.Frame):
 
 
 class PatientHeaderFrame(tk.Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.pack(fill="x")
+    def __init__(
+        self,
+        parent,
+    ):
+        super().__init__(
+            parent,
+            # background="orange",
+        )
+        # self.pack(
+        #     fill=tk.BOTH,
+        #     expand=True,
+        # )
+        self.grid(
+            row=0,
+            column=0,
+            sticky="nsew",
+            padx=5,
+            pady=5,
+        )
+
+        headerFrame = tk.Frame(self, background="dark orange")
+
+        headerFrame.grid(
+            row=0,
+            column=0,
+            sticky="nsew",
+            padx=5,
+            pady=5,
+        )
+
+        weight = [5, 5, 1, 1, 7]
+
+        headerFrame.grid_rowconfigure(0, weight=1)
+
+        labelList = Global.LabelList[:6]
+        del labelList[4]
+
+        for column, label in enumerate(labelList):
+            cell = tk.Label(
+                headerFrame,
+                text=label,
+                background="blue",
+                # anchor="w",
+                borderwidth=1,
+                relief="solid",
+            )
+            cell.grid(
+                row=0,
+                column=column,
+                sticky="nsew",
+                padx=5,
+                pady=5,
+            )
+
+        for column in range(5):
+            headerFrame.grid_columnconfigure(
+                column,
+                weight=weight[column],
+                uniform="group1",
+            )
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
 
 
 class PatientRowFrame(tk.Frame):
@@ -436,7 +548,7 @@ class PatientRowFrame(tk.Frame):
             cell = tk.Label(
                 self,
                 text=getattr(patient, label),
-                background="blue",
+                background="sky blue",
                 # anchor="w",
                 borderwidth=1,
                 relief="solid",
@@ -466,10 +578,21 @@ class PatientListFrame(tk.Frame):
         parent,
         graph_page=None,
     ):
-        super().__init__(parent)
-        self.pack(
-            fill=tk.BOTH,
-            expand=True,
+        super().__init__(
+            parent,
+            borderwidth=10,
+            relief="groove",
+        )
+        # self.pack(
+        #     fill=tk.BOTH,
+        #     expand=True,
+        # )
+        self.grid(
+            row=1,
+            column=0,
+            sticky="nsew",
+            padx=5,
+            pady=5,
         )
 
         patientList = get.get_patient_list()

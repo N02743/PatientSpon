@@ -44,4 +44,5 @@ class patientList(tk.Tk):
         navFrame = Frame.PatientListNavFrame(parent)
 
         # TODO: Patient list frame
-        patientList = Frame.PatientListFrame(parent, graph_page)
+        # patientList = Frame.PatientListFrame(parent, graph_page)
+        patientContent = Frame.PatientContentFrame(parent, graph_page)

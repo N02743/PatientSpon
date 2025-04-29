@@ -142,7 +142,7 @@ class PatientFrame(tk.Frame):
 
         pageInfo = tk.Frame(
             self,
-            bg="purple",
+            bg=Color.patientPageBG,
         )
 
         frame = []
@@ -205,7 +205,10 @@ class PatientFrame(tk.Frame):
 
 class ConfigButtonFrame(tk.Frame):
     def __init__(self, parent):
-        super().__init__(parent)
+        super().__init__(
+            parent,
+            background=Color.configFrameBG,
+        )
         self.pack(side="left")
 
         # TODO: Add choose date to show
@@ -251,7 +254,10 @@ class ConfigButtonFrame(tk.Frame):
 
 class ConfirmFrame(tk.Frame):
     def __init__(self, parent):
-        super().__init__(parent)
+        super().__init__(
+            parent,
+            background=Color.configFrameBG,
+        )
         self.pack(side="right")
 
         resetButton = Widget.ResetButton(
@@ -270,6 +276,7 @@ class GraphConfigFrame(tk.Frame):
             parent,
             padx=Var.padding,
             pady=Var.padding,
+            bg=Color.configFrameBG,
         )
         self.pack(side="top", fill="x")
 
@@ -333,7 +340,7 @@ class PatientFiltersFrame(tk.Frame):
 
         info = tk.Frame(
             self,
-            bg=Color.patientInfoFirstRowBG,
+            bg=Color.patientPageBG,
         )
         PageInfoFrame(info, text="Patient Info Page")
         info.pack(

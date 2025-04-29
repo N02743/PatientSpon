@@ -49,13 +49,13 @@ app.protocol("WM_DELETE_WINDOW", onClosing)
 app.update_idletasks()
 Var.window_width = app.winfo_width()
 
-# PAGE = Page.patientList(
-#     app,
-#     graph_page=graph_page,
-#     onClosing=onClosing,
-# )
+PAGE = Page.patientList(
+    app,
+    graph_page=graph_page,
+    onClosing=onClosing,
+)
 
 # for develop
-PAGE = Page.showGraph(app, "0000000000", patient_page)
+# PAGE = Page.showGraph(app, "0000000000", patient_page)
 
 app.mainloop()

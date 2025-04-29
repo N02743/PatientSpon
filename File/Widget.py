@@ -68,7 +68,7 @@ class ToggleButton(tk.Button):
         )
         self.pack(
             side="left",
-            padx=Var.padding,
+            padx=20,
         )
 
         self.variable = var

@@ -1,7 +1,7 @@
 canvas = None
 
 
-def CanvasRedrawSet(redrawFunc):
+def CanvasRedrawSetting(redrawFunc):
     global redrawFunction
     redrawFunction = redrawFunc
 

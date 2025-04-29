@@ -1,8 +1,10 @@
 import tkinter as tk
 
-import Data.getData as get
-import File.Frame as Frame
-import Var.Global as Global
+from Var import Global
+
+from File import Frame
+
+from Data import getData as get
 
 
 class showGraph(tk.Tk):
@@ -22,7 +24,7 @@ class showGraph(tk.Tk):
         # Nav Frame
         navFrame = Frame.GraphNavFrame(
             parent,
-            PT=PATIENT_DATA,
+            PatientData=PATIENT_DATA,
             patient_page=patient_page,
         )
 
@@ -45,5 +47,4 @@ class patientList(tk.Tk):
         navFrame = Frame.PatientListNavFrame(parent, onClosing)
 
         # TODO: Patient list frame
-        # patientList = Frame.PatientListFrame(parent, graph_page)
         patientContent = Frame.PatientContentFrame(parent, graph_page)

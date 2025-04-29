@@ -9,3 +9,5 @@ graph = (fontName, 10)
 graphLabel = (fontName, 15, "bold")
 dayRangeLabel = (fontName, 15, "italic")
 dayRange = (fontName, 10, "bold")
+
+backButtom = (fontName, 30, "bold")

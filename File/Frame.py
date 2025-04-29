@@ -1,17 +1,13 @@
 import tkinter as tk
-
-import Var.Global as Global
-import Var.Variable as Var
-import Var.Color as Color
-import Var.Font as Font
-
-import File.Widget as Widget
-import File.Canvas as Canvas
-
-import Data.getData as get
-
-import File.GlobalFunction as GLBFunc
 from tkinter import messagebox
+
+from Var import Font, Global, Var
+from Var.Color import Color
+
+from File import Widget, Canvas
+from File import GlobalFunction as GLBFunc
+
+from Data import getData as get
 
 
 def toggleGrid():
@@ -77,6 +73,15 @@ def resetButtonFunction():
     print("Reset Button")
 
 
+def addNewPatient():
+    # TODO:
+    messagebox.showinfo(
+        "Add new Patient",
+        "text field for add new Patient",
+    )
+    print("Config Time Tick")
+
+
 class BannerFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(
@@ -97,7 +102,10 @@ class BannerFrame(tk.Frame):
             bg=Color.mainLabelBG,
             font=Font.banner,
         )
-        Label.pack(side="top", pady=10)
+        Label.pack(
+            side="top",
+            pady=Var.bannerLabelPadding,
+        )
 
         SubLabel = tk.Label(
             self,
@@ -290,7 +298,7 @@ class GraphNavFrame(NavFrame):
     def __init__(
         self,
         parent,
-        PT,
+        PatientData,
         patient_page,
     ):
         super().__init__(parent)
@@ -298,10 +306,10 @@ class GraphNavFrame(NavFrame):
         tk.Button(
             self,
             text="↶",
-            font=("Arial", 30, "bold"),
-            fg="white",
-            background="red",
-            width=2,
+            font=Font.backButtom,
+            fg=Color.backButtomFontBG,
+            background=Color.backButtomBG,
+            width=Var.backButtomWidth,
             command=lambda: patient_page(),
         ).pack(
             side="left",
@@ -309,7 +317,7 @@ class GraphNavFrame(NavFrame):
         )
 
         banner = BannerFrame(self)
-        patient = PatientFrame(self, PT=PT)
+        patient = PatientFrame(self, PT=PatientData)
 
 
 # TODO: Remove duplicate PatientFrame
@@ -317,7 +325,6 @@ class PatientFiltersFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(
             parent,
-            bg="green",
         )
         self.pack(
             fill=tk.BOTH,
@@ -326,7 +333,7 @@ class PatientFiltersFrame(tk.Frame):
 
         info = tk.Frame(
             self,
-            bg="purple",
+            bg=Color.patientInfoFirstRowBG,
         )
         PageInfoFrame(info, text="Patient Info Page")
         info.pack(
@@ -365,13 +372,7 @@ class PatientContentFrame(tk.Frame):
             pady=30,
         )
 
-        # patientRow = PatientRowFrame(
-        #         self,
-        #         patient=patient,
-        #         row=row,
-        #     )
         header = PatientHeaderFrame(self)
-        # tk.Label(self, text="Patient").pack()
         patientList = PatientListFrame(self, graph_page)
 
         buttom = PatientButtomFrame(self)
@@ -390,13 +391,20 @@ class PatientButtomFrame(tk.Frame):
             row=2,
             column=0,
             sticky="nsew",
-            padx=5,
-            pady=5,
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
 
-        tk.Label(self, text="Founded xx of xxx").pack(side="left")
+        filterAmount = Global.patientFilterAmount
+        allAmount = Global.patientAllAmount
 
-        tk.Button(self, text="Add new Patient").pack(side="right")
+        tk.Label(self, text=f"Founded {filterAmount} of {allAmount}").pack(side="left")
+
+        tk.Button(
+            self,
+            text="Add new Patient",
+            command=lambda: addNewPatient(),
+        ).pack(side="right")
 
 
 class PatientListNavFrame(NavFrame):
@@ -410,10 +418,10 @@ class PatientListNavFrame(NavFrame):
         tk.Button(
             self,
             text="X",
-            font=("Arial", 30, "bold"),
-            fg="white",
-            background="red",
-            width=2,
+            font=Font.backButtom,
+            fg=Color.backButtomFontBG,
+            background=Color.backButtomBG,
+            width=Var.backButtomWidth,
             command=lambda: onClosing(),
         ).pack(
             side="left",
@@ -462,7 +470,7 @@ class CanvasFrame(tk.Frame):
             patient_data=patient_data,
         )
 
-        GLBFunc.CanvasRedrawSet(canvas.redraw)
+        GLBFunc.CanvasRedrawSetting(canvas.redraw)
 
 
 class PatientHeaderFrame(tk.Frame):
@@ -472,63 +480,43 @@ class PatientHeaderFrame(tk.Frame):
     ):
         super().__init__(
             parent,
-            # background="orange",
+            background=Color.patientHeaderFrameBG,
         )
-        # self.pack(
-        #     fill=tk.BOTH,
-        #     expand=True,
-        # )
         self.grid(
             row=0,
             column=0,
             sticky="nsew",
-            padx=5,
-            pady=5,
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
 
-        headerFrame = tk.Frame(self, background="dark orange")
-
-        headerFrame.grid(
-            row=0,
-            column=0,
-            sticky="nsew",
-            padx=5,
-            pady=5,
-        )
-
-        weight = [5, 5, 1, 1, 7]
-
-        headerFrame.grid_rowconfigure(0, weight=1)
+        weight = Var.patientListWeight
 
         labelList = Global.LabelList[:6]
         del labelList[4]
 
         for column, label in enumerate(labelList):
             cell = tk.Label(
-                headerFrame,
+                self,
                 text=label,
-                background="blue",
-                # anchor="w",
-                borderwidth=1,
-                relief="solid",
+                background=Color.patientHeaderBG,
             )
             cell.grid(
                 row=0,
                 column=column,
                 sticky="nsew",
-                padx=5,
-                pady=5,
+                padx=Var.miniPadding,
+                pady=Var.miniPadding,
             )
 
         for column in range(5):
-            headerFrame.grid_columnconfigure(
+            self.grid_columnconfigure(
                 column,
                 weight=weight[column],
                 uniform="group1",
             )
 
         self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
 
 
 class PatientRowFrame(tk.Frame):
@@ -540,18 +528,18 @@ class PatientRowFrame(tk.Frame):
     ):
         super().__init__(
             parent,
-            background="red",
+            background=Color.patientRowFrameBG,
         )
 
         self.grid(
             row=row,
             column=0,
             sticky="nsew",
-            padx=5,
-            pady=5,
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
 
-        weight = [5, 5, 1, 1, 7]
+        weight = Var.patientListWeight
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -562,21 +550,29 @@ class PatientRowFrame(tk.Frame):
             cell = tk.Label(
                 self,
                 text=getattr(patient, label),
-                background="sky blue",
-                # anchor="w",
+                background=Color.patientRowBG,
                 borderwidth=1,
-                relief="solid",
+                relief=Var.patientRowBorderType,
             )
             cell.grid(
                 row=0,
                 column=column,
                 sticky="nsew",
-                padx=5,
-                pady=5,
+                padx=Var.miniPadding,
+                pady=Var.miniPadding,
             )
-            cell.bind("<Button-1>", lambda event: self.event_generate("<Button-1>"))
-            cell.bind("<Enter>", lambda event: self.event_generate("<Enter>"))
-            cell.bind("<Leave>", lambda event: self.event_generate("<Leave>"))
+            cell.bind(
+                "<Button-1>",
+                lambda event: self.event_generate("<Button-1>"),
+            )
+            cell.bind(
+                "<Enter>",
+                lambda event: self.event_generate("<Enter>"),
+            )
+            cell.bind(
+                "<Leave>",
+                lambda event: self.event_generate("<Leave>"),
+            )
 
         for column in range(5):
             self.grid_columnconfigure(
@@ -594,19 +590,15 @@ class PatientListFrame(tk.Frame):
     ):
         super().__init__(
             parent,
-            borderwidth=10,
-            relief="groove",
+            borderwidth=Var.patientListBorderWidth,
+            relief=Var.patientListBorderType,
         )
-        # self.pack(
-        #     fill=tk.BOTH,
-        #     expand=True,
-        # )
         self.grid(
             row=1,
             column=0,
             sticky="nsew",
-            padx=5,
-            pady=5,
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
 
         patientList = get.get_patient_list()
@@ -624,11 +616,11 @@ class PatientListFrame(tk.Frame):
             )
             patientRow.bind(
                 "<Enter>",
-                lambda event, ptR=patientRow: ptR.config(bg="green"),
+                lambda event, ptR=patientRow: ptR.config(bg=Color.patientRowOnHover),
             )
             patientRow.bind(
                 "<Leave>",
-                lambda event, ptR=patientRow: ptR.config(bg="red"),
+                lambda event, ptR=patientRow: ptR.config(bg=Color.patientRowFrameBG),
             )
 
             self.grid_rowconfigure(row, weight=1)

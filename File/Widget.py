@@ -1,9 +1,7 @@
 import tkinter as tk
 
-import Var.Color as Color
-import Var.Variable as Var
-import Var.Font as Font
-import Var.Global as Global
+from Var import Var
+from Var.Color import Color
 
 
 def buttonColor(variable, isClick):
@@ -59,10 +57,8 @@ class ToggleButton(tk.Button):
         text,
         var,
     ):
-        if var is None:
-            bgColor = "white"
-        else:
-            bgColor = buttonColor(var, False)
+
+        bgColor = buttonColor(var, False)
 
         super().__init__(
             parent,
@@ -121,6 +117,7 @@ class AddButton(tk.Button):
             side="left",
             padx=Var.padding,
         )
+        # TODO:
 
         # self.isClick = False
 

@@ -1,7 +1,7 @@
-import random
 import pandas as pd
-import File.Class as Class
-import Var.Variable as Var
+
+from File import Class
+from Var import Var as Var
 
 
 # TODO: Duplicate at Canvas.py

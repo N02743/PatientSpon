@@ -1,13 +1,12 @@
 import tkinter as tk
-import Var.Variable as Var
-
-import Var.Font as Font
-import File.Class as Class
-
 from tkinter import messagebox
 
-import Data.getData as get
-import Var.Global as Global
+from Var import Font, Global, Var
+from Var.Color import Color
+
+from File import Class
+
+from Data import getData as get
 
 
 def showImageModal(i):
@@ -25,7 +24,7 @@ class CanvasGraph(tk.Canvas):
         parent,
         patient_data: Class.Patient,
     ):
-        super().__init__(parent, bg="white")
+        super().__init__(parent, bg=Color.canvasBG)
         self.pack()
 
         self.patient_data = patient_data
@@ -96,8 +95,8 @@ class CanvasGraph(tk.Canvas):
             btn = tk.Button(
                 self,
                 text="📷",
-                command=lambda d=iterDate: showImageModal(d),
-                width=2,
+                command=lambda date=iterDate: showImageModal(date),
+                width=Var.imageShowWidth,
             )
             self.create_window(x, y + 25, window=btn)
             iterDate = get.nextDay(iterDate)
@@ -108,7 +107,7 @@ class CanvasGraph(tk.Canvas):
 
         y = self.row_y(self.row_idx) + 10
         self.create_text(
-            5,
+            Var.canvasPaddingLeft,
             y,
             anchor="w",
             text="Lab Test",
@@ -119,7 +118,7 @@ class CanvasGraph(tk.Canvas):
         for labTest in labResults.keys():
             y = self.row_y(self.row_idx) + 10
             self.create_text(
-                5,
+                Var.canvasPaddingLeft,
                 y,
                 anchor="w",
                 text=labTest,
@@ -151,7 +150,7 @@ class CanvasGraph(tk.Canvas):
                 x,
                 y + 10,
                 fill="black",
-                width=3,
+                width=Var.dayRangeWidth,
             )
             self.create_text(
                 x,
@@ -161,7 +160,7 @@ class CanvasGraph(tk.Canvas):
             )
 
         self.create_line(
-            5,
+            Var.canvasPaddingLeft,
             y,
             self.day_x(len(self.date_range) - 1) + Var.arrowGraph_padding,
             y,
@@ -175,7 +174,7 @@ class CanvasGraph(tk.Canvas):
     def DrawMedicine(self):
         y = self.row_y(self.row_idx) + 10
         self.create_text(
-            5,
+            Var.canvasPaddingLeft,
             y,
             anchor="w",
             text="Medicine Usage",
@@ -186,7 +185,7 @@ class CanvasGraph(tk.Canvas):
         for medicine in self.medicine_usage.keys():
             y = self.row_y(self.row_idx) + 10
             self.create_text(
-                5,
+                Var.canvasPaddingLeft,
                 y,
                 anchor="w",
                 text=medicine,
@@ -337,7 +336,7 @@ class CanvasGraph(tk.Canvas):
                 top,
                 x,
                 bottom,
-                fill="#ccc",
+                fill=Color.gridLine,
                 dash=(2, 4),
             )
             grid_lines.append(line)
@@ -356,7 +355,7 @@ class CanvasGraph(tk.Canvas):
                     pos_y,
                     right,
                     pos_y,
-                    fill="#ccc",
+                    fill=Color.gridLine,
                     dash=(2, 4),
                 )
                 grid_lines.append(line)

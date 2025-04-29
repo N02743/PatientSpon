@@ -73,7 +73,7 @@ def toggleMedUsage():
     print("toggle Medicine Usage")
 
 
-class GraphNavFrame(Frame.NavFrame):
+class NavFrame(Frame.NavFrame):
     def __init__(
         self,
         parent,
@@ -95,11 +95,11 @@ class GraphNavFrame(Frame.NavFrame):
             fill=tk.Y,
         )
 
-        banner = Widget.BannerFrame(self)
-        patient = PatientFrame(self, PT=PatientData)
+        banner = Frame.BannerFrame(self)
+        patient = PatientInfoFrame(self, PT=PatientData)
 
 
-class PatientFrame(tk.Frame):
+class PatientInfoFrame(tk.Frame):
     def __init__(self, parent, PT):
         super().__init__(
             parent,
@@ -145,7 +145,7 @@ class PatientFrame(tk.Frame):
             expand=True,
         )
 
-        Widget.PageInfoFrame(pageInfo, text="Medication page")
+        Frame.PageInfoFrame(pageInfo, text="Medication page")
 
         for i, label in enumerate(Global.LabelList):
             row = 0 if i < 4 else 1
@@ -190,8 +190,6 @@ class ContentFrame(tk.Frame):
             expand=True,
             fill="both",
         )
-
-        configFrame = GraphConfigFrame(self)
 
         canvasFrame = CanvasFrame(
             self,

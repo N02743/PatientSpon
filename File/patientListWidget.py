@@ -18,7 +18,7 @@ def addNewPatient():
     print("Config Time Tick")
 
 
-class PatientListNavFrame(Frame.NavFrame):
+class NavFrame(Frame.NavFrame):
     def __init__(
         self,
         parent,
@@ -39,12 +39,12 @@ class PatientListNavFrame(Frame.NavFrame):
             fill=tk.Y,
         )
 
-        banner = Widget.BannerFrame(self)
-        filter = PatientFiltersFrame(self)
+        banner = Frame.BannerFrame(self)
+        filter = FiltersFrame(self)
 
 
 # TODO: Remove duplicate PatientFrame
-class PatientFiltersFrame(tk.Frame):
+class FiltersFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(
             parent,
@@ -58,7 +58,7 @@ class PatientFiltersFrame(tk.Frame):
             self,
             bg=Color.patientPageBG,
         )
-        Widget.PageInfoFrame(info, text="Patient Info Page")
+        Frame.PageInfoFrame(info, text="Patient Info Page")
         info.pack(
             fill=tk.BOTH,
             expand=True,
@@ -81,7 +81,7 @@ class PatientFiltersFrame(tk.Frame):
         frame.grid_rowconfigure(0, weight=3)
 
 
-class PatientContentFrame(tk.Frame):
+class ContentFrame(tk.Frame):
     def __init__(
         self,
         parent,
@@ -95,10 +95,10 @@ class PatientContentFrame(tk.Frame):
             pady=30,
         )
 
-        header = PatientHeaderFrame(self)
-        patientList = PatientListFrame(self, graph_page)
+        header = HeaderFrame(self)
+        patientList = ListFrame(self, graph_page)
 
-        buttom = PatientButtomFrame(self)
+        buttom = ButtomFrame(self)
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=10)
@@ -107,7 +107,7 @@ class PatientContentFrame(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
 
 
-class PatientHeaderFrame(tk.Frame):
+class HeaderFrame(tk.Frame):
     def __init__(
         self,
         parent,
@@ -153,7 +153,7 @@ class PatientHeaderFrame(tk.Frame):
         self.grid_rowconfigure(0, weight=1)
 
 
-class PatientListFrame(tk.Frame):
+class ListFrame(tk.Frame):
     def __init__(
         self,
         parent,
@@ -199,7 +199,7 @@ class PatientListFrame(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
 
 
-class PatientButtomFrame(tk.Frame):
+class ButtomFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.grid(

@@ -3,9 +3,10 @@ from tkinter import messagebox
 
 from Var import Global
 
-from File import Frame
-
 from Data import getData as get
+
+from File import patientListWidget as patientList
+from File import showGraphWidget as showGraph
 
 
 class Page(tk.Tk):
@@ -14,11 +15,15 @@ class Page(tk.Tk):
         self.Page = self.patientListPage()
 
     def patientListPage(self):
-        # TODO: main Nav Frame
-        navFrame = Frame.PatientListNavFrame(self.parent, self.onClosing)
+        navFrame = patientList.NavFrame(
+            self.parent,
+            self.onClosing,
+        )
 
-        # TODO: Patient list frame
-        patientContent = Frame.PatientContentFrame(self.parent, self.open_ShowGraphPage)
+        patientContent = patientList.ContentFrame(
+            self.parent,
+            self.open_ShowGraphPage,
+        )
 
     def showGraphPage(
         self,
@@ -28,18 +33,16 @@ class Page(tk.Tk):
         Global.showLabTest = True
         Global.showMedUsage = True
 
-        # Get data
         PATIENT_DATA = get.get_patient_data_by_HN(patient_id)
 
-        # Nav Frame
-        navFrame = Frame.GraphNavFrame(
+        navFrame = showGraph.NavFrame(
             self.parent,
             PatientData=PATIENT_DATA,
             patient_page=self.open_PatientListPage,
         )
+        configFrame = showGraph.GraphConfigFrame(self.parent)
 
-        # Content Frame
-        contentFrame = Frame.ContentFrame(
+        contentFrame = showGraph.ContentFrame(
             self.parent,
             patient_data=PATIENT_DATA,
         )
@@ -59,7 +62,10 @@ class Page(tk.Tk):
         self.Page = self.showGraphPage(ID)
 
     def onClosing(self):
-        if messagebox.askokcancel("Quit", "Do you really want to quit?"):
+        if messagebox.askokcancel(
+            "Quit",
+            "Do you really want to quit?",
+        ):
             self.parent.destroy()
         else:
             print("Close canceled")

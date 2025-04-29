@@ -7,7 +7,10 @@ from File import Page
 
 
 def onClosing():
-    if messagebox.askokcancel("Quit", "Do you really want to quit?"):
+    if messagebox.askokcancel(
+        "Quit",
+        "Do you really want to quit?",
+    ):
         app.destroy()
     else:
         print("Close canceled")

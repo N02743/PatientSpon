@@ -33,8 +33,6 @@ def confirmButtonFunction():
 
 
 def update_listbox(*args):
-    for key in Global.filterVarDict.keys():
-        print(key, Global.filterVarDict[key].get().lower())
     GLBFunc.PatientListReload()
     print("update\n")
 
@@ -239,6 +237,10 @@ class ListFrame(tk.Frame):
         )
 
         self.patientListData = get.get_patient_list()
+
+        Global.patientAllAmount = len(self.patientListData)
+        Global.patientFilterAmount = Global.patientAllAmount
+
         self.graph_page = graph_page
 
         self.patientRowList = []
@@ -266,6 +268,7 @@ class ListFrame(tk.Frame):
                         .str.lower()
                         .str.contains(value)
                     ]
+        Global.patientFilterAmount = len(patientListData)
 
         for row, patient in enumerate(patientListData.itertuples()):
             # TODO:
@@ -309,16 +312,24 @@ class ButtomFrame(tk.Frame):
             pady=Var.miniPadding,
         )
 
-        filterAmount = Global.patientFilterAmount
-        allAmount = Global.patientAllAmount
+        self.label = tk.Label(
+            self,
+            text=f"Founded {Global.patientFilterAmount} of {Global.patientAllAmount}",
+        )
+        self.label.pack(side="left")
 
-        tk.Label(self, text=f"Founded {filterAmount} of {allAmount}").pack(side="left")
+        GLBFunc.PatientFilterFoundLabelSetting(self.onFilter)
 
         tk.Button(
             self,
             text="Add new Patient",
             command=lambda: addNewPatient(),
         ).pack(side="right")
+
+    def onFilter(self):
+        self.label.config(
+            text=f"Founded {Global.patientFilterAmount} of {Global.patientAllAmount}"
+        )
 
 
 class GraphConfigFrame(tk.Frame):

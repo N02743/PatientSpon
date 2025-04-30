@@ -15,5 +15,11 @@ def PatientListReloadSetting(reloadFunc):
     reloadFunction = reloadFunc
 
 
+def PatientFilterFoundLabelSetting(filterLabelFunc):
+    global filterLabelFunction
+    filterLabelFunction = filterLabelFunc
+
+
 def PatientListReload():
     reloadFunction()
+    filterLabelFunction()

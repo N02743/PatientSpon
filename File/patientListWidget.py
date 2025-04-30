@@ -236,6 +236,40 @@ class ListFrame(tk.Frame):
             pady=Var.miniPadding,
         )
 
+        canvas = tk.Canvas(self)
+        canvas.pack(
+            side=tk.LEFT,
+            fill=tk.BOTH,
+            expand=True,
+        )
+
+        scrollbar = tk.Scrollbar(self, orient="vertical", command=canvas.yview)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        self.inner_frame = tk.Frame(canvas, bg="blue")
+        window_id = canvas.create_window(
+            (0, 0),
+            window=self.inner_frame,
+            anchor="w",
+        )
+
+        def resize_inner(event):
+            canvas.itemconfig(window_id, width=event.width)
+
+        canvas.bind("<Configure>", resize_inner)
+
+        def on_frame_configure(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+
+        self.inner_frame.bind("<Configure>", on_frame_configure)
+
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+        canvas.bind_all("<MouseWheel>", _on_mousewheel)
+
         self.patientListData = get.get_patient_list()
 
         Global.patientAllAmount = len(self.patientListData)
@@ -274,7 +308,8 @@ class ListFrame(tk.Frame):
             # TODO:
             self.patientRowList.append(
                 Frame.PatientRowFrame(
-                    self,
+                    # self,
+                    self.inner_frame,
                     patient=patient,
                     row=row,
                 )

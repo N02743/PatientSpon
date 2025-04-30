@@ -76,6 +76,7 @@ class PatientRowFrame(tk.Frame):
         super().__init__(
             parent,
             background=Color.patientRowFrameBG,
+            # height=100,
         )
 
         self.grid(

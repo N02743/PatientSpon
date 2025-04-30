@@ -3,6 +3,11 @@ import pandas as pd
 from File import Class
 from Var import Var as Var
 
+# patientDataFilePath = "Data/PatientData.csv"
+patientDataFilePath = "Data/PatientData50.csv"
+labResultFilePath = "Data/mock_lab_results.csv"
+medicineUsageFilePath = "Data/mock_medicine_usage.csv"
+
 
 # TODO: Duplicate at Canvas.py
 def nextDay(date):
@@ -20,7 +25,7 @@ def findDays(start, end):
 
 def get_patient_list():
     patientCSV = pd.read_csv(
-        "Data/PatientData.csv",
+        patientDataFilePath,
         dtype={
             "HN": str,
             "AN": str,
@@ -33,7 +38,7 @@ def get_patient_list():
 
 def get_patient_data_by_HN(HN):
     patientCSV = pd.read_csv(
-        "Data/PatientData.csv",
+        patientDataFilePath,
         dtype={
             "HN": str,
             "AN": str,
@@ -79,7 +84,7 @@ def get_dateRange_data(start, end):
 
 def get_labResults_data_by_HN(HN, start, end):
     labResultCSV = pd.read_csv(
-        "Data/mock_lab_results.csv",
+        labResultFilePath,
         dtype={
             "HN": str,
             "Date": str,
@@ -115,7 +120,7 @@ def get_labResults_data_by_HN(HN, start, end):
 
 def get_medicineUsage_data_by_HN(HN, start, end):
     medicineUsageCSV = pd.read_csv(
-        "Data/mock_medicine_usage.csv",
+        medicineUsageFilePath,
         dtype={
             "HN": str,
             "Date": str,

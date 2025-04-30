@@ -248,12 +248,17 @@ class ListFrame(tk.Frame):
 
         canvas.configure(yscrollcommand=scrollbar.set)
 
-        self.inner_frame = tk.Frame(canvas, bg="blue")
+        self.inner_frame = tk.Frame(
+            canvas,
+            bg=Color.patientListInnerFrameBG,
+        )
         window_id = canvas.create_window(
             (0, 0),
             window=self.inner_frame,
-            anchor="w",
+            anchor="nw",
         )
+
+        self.inner_frame.grid_columnconfigure(0, weight=1)
 
         def resize_inner(event):
             canvas.itemconfig(window_id, width=event.width)

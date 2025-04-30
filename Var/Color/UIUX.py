@@ -32,3 +32,5 @@ canvasBG = "white"
 gridLine = "#ccc"
 
 configFrameBG = "#c8d6ef"
+
+patientListInnerFrameBG = "white"

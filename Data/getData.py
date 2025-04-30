@@ -5,8 +5,10 @@ from Var import Var as Var
 
 # patientDataFilePath = "Data/PatientData.csv"
 patientDataFilePath = "Data/PatientData50.csv"
-labResultFilePath = "Data/mock_lab_results.csv"
-medicineUsageFilePath = "Data/mock_medicine_usage.csv"
+# labResultFilePath = "Data/mock_lab_results.csv"
+# medicineUsageFilePath = "Data/mock_medicine_usage.csv"
+labResultFilePath = "Data/LabResultData.csv"
+medicineUsageFilePath = "Data/MedicineUsage.csv"
 
 
 # TODO: Duplicate at Canvas.py

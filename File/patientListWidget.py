@@ -243,6 +243,7 @@ class ListFrame(tk.Frame):
             expand=True,
         )
 
+        # TODO: scrollbar can scroll until the last item hit buttom and first item hit top
         scrollbar = tk.Scrollbar(self, orient="vertical", command=canvas.yview)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 

@@ -20,6 +20,8 @@ class Page(tk.Tk):
             self.onClosing,
         )
 
+        # configFrame = patientList.GraphConfigFrame(self.parent)
+
         patientContent = patientList.ContentFrame(
             self.parent,
             self.open_ShowGraphPage,
@@ -40,6 +42,7 @@ class Page(tk.Tk):
             PatientData=PATIENT_DATA,
             patient_page=self.open_PatientListPage,
         )
+
         configFrame = showGraph.GraphConfigFrame(self.parent)
 
         contentFrame = showGraph.ContentFrame(

@@ -8,3 +8,5 @@ showMedUsage = True
 # TODO:
 patientFilterAmount = 3
 patientAllAmount = 10
+
+filterVarDict = {}

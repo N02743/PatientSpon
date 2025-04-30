@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 from File import Widget, Frame
+from File import GlobalFunction as GLBFunc
 
 from Var import Font, Var, Global
 from Var.Color import Color
@@ -16,6 +17,26 @@ def addNewPatient():
         "text field for add new Patient",
     )
     print("Config Time Tick")
+
+
+def resetButtonFunction():
+    # TODO:
+
+    print("Reset Button")
+
+
+def confirmButtonFunction():
+    # TODO:
+    GLBFunc.reloadFunction()
+
+    print("Confirm Button")
+
+
+def update_listbox(*args):
+    for key in Global.filterVarDict.keys():
+        print(key, Global.filterVarDict[key].get().lower())
+    GLBFunc.PatientListReload()
+    print("update\n")
 
 
 class NavFrame(Frame.NavFrame):
@@ -54,31 +75,76 @@ class FiltersFrame(tk.Frame):
             expand=True,
         )
 
-        info = tk.Frame(
+        weightList = [15, 15, 1, 1, 15]
+
+        pageInfo = tk.Frame(
             self,
             bg=Color.patientPageBG,
         )
-        Frame.PageInfoFrame(info, text="Patient Info Page")
-        info.pack(
+        Frame.PageInfoFrame(pageInfo, text="Patient Info Page")
+        pageInfo.pack(
             fill=tk.BOTH,
             expand=True,
         )
 
-        # TODO:
-        frame = tk.Frame(
-            self,
-            bg=Color.patientInfoSecondRowBG,
+        frame = []
+        frame.append(
+            tk.Frame(
+                self,
+                bg=Color.patientInfoFirstRowBG,
+            )
         )
-        frame.pack(
+        frame.append(
+            tk.Frame(
+                self,
+                bg=Color.patientInfoSecondRowBG,
+            )
+        )
+        frame[0].pack(
+            fill=tk.BOTH,
+            expand=True,
+        )
+        frame[1].pack(
             fill=tk.BOTH,
             expand=True,
         )
 
-        info.grid_columnconfigure(0, weight=1)
-        frame.grid_columnconfigure(0, weight=1)
+        labelList = Global.LabelList[:6]
+        del labelList[4]  # remove sex label
 
-        info.grid_rowconfigure(0, weight=1)
-        frame.grid_rowconfigure(0, weight=3)
+        tf = []
+
+        for i, label in enumerate(labelList):
+            row = 0 if i < 2 else 1
+            column = i if i < 2 else i - 2
+
+            tf.append(
+                Widget.Textfield(
+                    frame[row],
+                    label=label,
+                    info=None,
+                    row=0,
+                    column=column,
+                )
+            )
+            tf[i].onEnabled()
+            tf[i].entryVar.trace_add("write", update_listbox)
+            # tf[i].entry.trace_add('write', update_listbox)
+
+        for i in range(len(weightList)):
+            row = 0 if i < 2 else 1
+            column = i if i < 2 else i - 2
+
+            frame[row].grid_columnconfigure(
+                column,
+                weight=weightList[i],
+            )
+
+        pageInfo.grid_columnconfigure(0, weight=1)
+        pageInfo.grid_rowconfigure(0, weight=1)
+
+        frame[0].grid_rowconfigure(0, weight=1)
+        frame[1].grid_rowconfigure(0, weight=1)
 
 
 class ContentFrame(tk.Frame):
@@ -172,26 +238,59 @@ class ListFrame(tk.Frame):
             pady=Var.miniPadding,
         )
 
-        patientList = get.get_patient_list()
+        self.patientListData = get.get_patient_list()
+        self.graph_page = graph_page
 
-        for row, patient in enumerate(patientList.itertuples()):
+        self.patientRowList = []
+        self.renderRow()
+        GLBFunc.PatientListReloadSetting(self.renderRow)
+
+    def renderRow(self):
+        for row in self.patientRowList:
+            row.destroy()
+
+        self.patientRowList = []
+
+        patientListData = self.patientListData.copy()
+
+        for label, var in Global.filterVarDict.items():
+            value = var.get().strip().lower()
+            if value:
+                patientListData = patientListData[
+                    patientListData[label].astype(str).str.lower().str.contains(value)
+                ]
+                if label in patientListData.columns:
+                    patientListData = patientListData[
+                        patientListData[label]
+                        .astype(str)
+                        .str.lower()
+                        .str.contains(value)
+                    ]
+
+        for row, patient in enumerate(patientListData.itertuples()):
             # TODO:
-            patientRow = Frame.PatientRowFrame(
-                self,
-                patient=patient,
-                row=row,
+            self.patientRowList.append(
+                Frame.PatientRowFrame(
+                    self,
+                    patient=patient,
+                    row=row,
+                )
             )
-            patientRow.bind(
+            self.patientRowList[row].bind(
                 "<Button-1>",
-                lambda event, HN=patient.HN: graph_page(HN),
+                lambda event, HN=patient.HN: self.graph_page(HN),
             )
-            patientRow.bind(
+            self.patientRowList[row].bind(
                 "<Enter>",
-                lambda event, ptR=patientRow: ptR.config(bg=Color.patientRowOnHover),
+                lambda event, ptR=self.patientRowList[row]: ptR.config(
+                    bg=Color.patientRowOnHover
+                ),
             )
-            patientRow.bind(
+            self.patientRowList[row].bind(
                 "<Leave>",
-                lambda event, ptR=patientRow: ptR.config(bg=Color.patientRowFrameBG),
+                lambda event, ptR=self.patientRowList[row]: ptR.config(
+                    bg=Color.patientRowFrameBG
+                ),
             )
 
             self.grid_rowconfigure(row, weight=1)
@@ -220,3 +319,65 @@ class ButtomFrame(tk.Frame):
             text="Add new Patient",
             command=lambda: addNewPatient(),
         ).pack(side="right")
+
+
+class GraphConfigFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            padx=Var.padding,
+            pady=Var.padding,
+            bg=Color.configFrameBG,
+        )
+        self.pack(side="top", fill="x")
+
+        # buttonFrame = ConfigButtonFrame(self)
+        confirmFrame = ConfirmFrame(self)
+
+
+# class ConfigButtonFrame(tk.Frame):
+#     def __init__(self, parent):
+#         super().__init__(
+#             parent,
+#             background=Color.configFrameBG,
+#         )
+#         self.pack(side="left")
+
+#         global showLabButton
+#         showLabButton = Widget.ToggleButton(
+#             self,
+#             text="Show Lab test",
+#             var=Global.showLabTest,
+#         )
+
+#         global showMedButton
+#         showMedButton = Widget.ToggleButton(
+#             self,
+#             text="Show Medication",
+#             var=Global.showMedUsage,
+#         )
+
+#         global showGridButton
+#         showGridButton = Widget.ToggleButton(
+#             self,
+#             text="Show grid",
+#             var=Global.showGrid,
+#         )
+
+
+class ConfirmFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(
+            parent,
+            background=Color.configFrameBG,
+        )
+        self.pack(side="right")
+
+        resetButton = Widget.ResetButton(
+            self,
+            command=lambda: resetButtonFunction(),
+        )
+        confirmButton = Widget.ConfirmButton(
+            self,
+            command=lambda: confirmButtonFunction(),
+        )

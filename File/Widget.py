@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from Var import Var
+from Var import Var, Global
 from Var.Color import Color
 
 
@@ -35,6 +35,8 @@ class Textfield(tk.Frame):
             pady=5,
         )
 
+        self.label = label
+
         # TODO: Font size responsive => grid?
         label = tk.Label(
             self,
@@ -42,12 +44,19 @@ class Textfield(tk.Frame):
         )
         label.pack(side="left")
 
-        entry = tk.Entry(self)
-        entry.insert(0, info)
-        entry.config(state="disabled")
-        entry.pack(
+        self.entryVar = tk.StringVar()
+
+        self.entry = tk.Entry(self, textvariable=self.entryVar)
+        if info is not None:
+            self.entry.insert(0, info)
+        self.entry.config(state="readonly")
+        self.entry.pack(
             side="right",
         )
+
+    def onEnabled(self):
+        self.entry.config(state="normal")
+        Global.filterVarDict[self.label] = self.entryVar
 
 
 class ToggleButton(tk.Button):

@@ -103,7 +103,6 @@ class PatientInfoFrame(tk.Frame):
     def __init__(self, parent, PT):
         super().__init__(
             parent,
-            bg="green",
         )
         self.pack(
             fill=tk.BOTH,
@@ -115,6 +114,11 @@ class PatientInfoFrame(tk.Frame):
         pageInfo = tk.Frame(
             self,
             bg=Color.patientPageBG,
+        )
+        Frame.PageInfoFrame(pageInfo, text="Medication page")
+        pageInfo.pack(
+            fill=tk.BOTH,
+            expand=True,
         )
 
         frame = []
@@ -131,11 +135,6 @@ class PatientInfoFrame(tk.Frame):
             )
         )
 
-        pageInfo.pack(
-            fill=tk.BOTH,
-            expand=True,
-        )
-
         frame[0].pack(
             fill=tk.BOTH,
             expand=True,
@@ -144,8 +143,6 @@ class PatientInfoFrame(tk.Frame):
             fill=tk.BOTH,
             expand=True,
         )
-
-        Frame.PageInfoFrame(pageInfo, text="Medication page")
 
         for i, label in enumerate(Global.LabelList):
             row = 0 if i < 4 else 1

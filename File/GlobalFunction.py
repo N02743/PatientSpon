@@ -7,5 +7,13 @@ def CanvasRedrawSetting(redrawFunc):
 
 
 def CanvasRedraw():
-
     redrawFunction()
+
+
+def PatientListReloadSetting(reloadFunc):
+    global reloadFunction
+    reloadFunction = reloadFunc
+
+
+def PatientListReload():
+    reloadFunction()

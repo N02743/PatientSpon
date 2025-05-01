@@ -109,7 +109,7 @@ class ToggleButton(tk.Button):
         self.configColor()
 
 
-class AddButton(tk.Button):
+class ConfigButton(tk.Button):
     def __init__(
         self,
         parent,

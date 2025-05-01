@@ -10,3 +10,5 @@ patientFilterAmount = 3
 patientAllAmount = 10
 
 filterVarDict = {}
+
+maxDayShowInCanvas = 17

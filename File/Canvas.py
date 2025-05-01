@@ -8,6 +8,8 @@ from File import Class
 
 from Data import getData as get
 
+import datetime as dt
+
 
 def showImageModal(i):
     # TODO: show Image modal
@@ -30,8 +32,17 @@ class CanvasGraph(tk.Canvas):
         self.patient_data = patient_data
 
         # TODO: auto set date
-        self.startDate = "01/03/2025"
-        self.endDate = "18/03/2025"
+        now = dt.datetime.now()
+        before = now - dt.timedelta(days=Global.maxDayShowInCanvas)
+        now = f"{now:%d/%m/%Y}"
+        before = f"{before:%d/%m/%Y}"
+        # print(f"Now: {now}, {before}")
+
+        # self.startDate = "01/03/2025"
+        # self.endDate = "18/03/2025"
+
+        self.startDate = before
+        self.endDate = now
 
         self.redraw()
 

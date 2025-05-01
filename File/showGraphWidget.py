@@ -37,6 +37,14 @@ def configTimeTick():
     print("Config Time Tick")
 
 
+def selectDate():
+    messagebox.showinfo(
+        "Select Date range",
+        "text field for Select Date range",
+    )
+    print("Config Time Tick")
+
+
 def confirmButtonFunction():
     Global.showGrid = showGridButton.onConfirm()
     Global.showLabTest = showLabButton.onConfirm()
@@ -301,18 +309,18 @@ class ConfigButtonFrame(tk.Frame):
             var=Global.showMedUsage,
         )
 
-        addLabButton = Widget.AddButton(
+        addLabButton = Widget.ConfigButton(
             self,
             text="Add new Lab test",
             command=lambda: addNewLabTest(),
         )
-        addMedButton = Widget.AddButton(
+        addMedButton = Widget.ConfigButton(
             self,
             text="Add new Medication",
             command=lambda: addNewMedUsage(),
         )
 
-        timeTickButton = Widget.AddButton(
+        timeTickButton = Widget.ConfigButton(
             self,
             text="Time tick",
             command=lambda: configTimeTick(),
@@ -323,6 +331,12 @@ class ConfigButtonFrame(tk.Frame):
             self,
             text="Show grid",
             var=Global.showGrid,
+        )
+
+        selectDateButton = Widget.ConfigButton(
+            self,
+            text="Select date",
+            command=lambda: selectDate(),
         )
 
 

@@ -18,6 +18,7 @@ patientListBorderType = "groove"
 patientRowBorderType = "solid"
 
 patientListWeight = [5, 5, 1, 1, 7]
+navFrameWeight = [1, 5, 20]
 
 backButtomWidth = 2
 imageShowWidth = 2

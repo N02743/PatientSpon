@@ -9,8 +9,17 @@ from File import patientListWidget as patientList
 from File import showGraphWidget as showGraph
 
 
-class Page(tk.Tk):
+# class Page(tk.Tk):
+class Page(tk.Frame):
     def __init__(self, parent):
+        super().__init__(parent)
+        self.grid(
+            row=0,
+            column=0,
+            sticky="nsew",
+            padx=5,
+            pady=5,
+        )
         self.parent = parent
         self.Page = self.patientListPage()
 
@@ -22,7 +31,7 @@ class Page(tk.Tk):
 
         # configFrame = patientList.GraphConfigFrame(self.parent)
 
-        patientContent = patientList.ContentFrame(
+        self.patientContent = patientList.ContentFrame(
             self.parent,
             self.open_ShowGraphPage,
         )
@@ -43,7 +52,7 @@ class Page(tk.Tk):
             patient_page=self.open_PatientListPage,
         )
 
-        configFrame = showGraph.GraphConfigFrame(self.parent)
+        # configFrame = showGraph.GraphConfigFrame(self.parent)
 
         contentFrame = showGraph.ContentFrame(
             self.parent,
@@ -60,6 +69,7 @@ class Page(tk.Tk):
         self.Page = self.patientListPage()
 
     def open_ShowGraphPage(self, ID):
+        self.patientContent.unbindScroll()
         self.clearPage()
 
         self.Page = self.showGraphPage(ID)

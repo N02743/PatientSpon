@@ -29,4 +29,9 @@ Var.window_width = app.winfo_width()
 
 PAGE = Page.Page(app)
 
+app.grid_rowconfigure(0, weight=1)
+app.grid_rowconfigure(1, weight=10)
+
+app.grid_columnconfigure(0, weight=1)
+
 app.mainloop()

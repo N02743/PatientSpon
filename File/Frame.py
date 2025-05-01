@@ -12,11 +12,18 @@ class BannerFrame(tk.Frame):
             width=Var.bannerFrame_width,
         )
 
-        self.pack(
-            side="left",
-            fill="both",
+        # self.pack(
+        #     side="left",
+        #     fill="both",
+        # )
+        self.grid(
+            row=0,
+            column=1,
+            sticky="nsew",
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
-        self.pack_propagate(False)
+        # self.pack_propagate(False)
 
         Label = tk.Label(
             self,
@@ -59,9 +66,16 @@ class NavFrame(tk.Frame):
             bg=Color.navFrameBG,
             height=Var.navFrame_height,
         )
-        self.pack(
-            side="top",
-            fill="x",
+        # self.pack(
+        #     side="top",
+        #     fill="x",
+        # )
+        self.grid(
+            row=0,
+            column=0,
+            sticky="nsew",
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
         self.pack_propagate(False)
 

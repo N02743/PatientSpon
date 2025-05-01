@@ -82,7 +82,7 @@ class NavFrame(Frame.NavFrame):
     ):
         super().__init__(parent)
 
-        tk.Button(
+        button = tk.Button(
             self,
             text="↶",
             font=Font.backButtom,
@@ -90,13 +90,30 @@ class NavFrame(Frame.NavFrame):
             background=Color.backButtomBG,
             width=Var.backButtomWidth,
             command=lambda: patient_page(),
-        ).pack(
-            side="left",
-            fill=tk.Y,
+        )
+        # button.pack(
+        #     side="left",
+        #     fill=tk.Y,
+        # )
+        button.grid(
+            row=0,
+            column=0,
+            sticky="nsew",
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
 
         banner = Frame.BannerFrame(self)
         patient = PatientInfoFrame(self, PT=PatientData)
+
+        self.grid_rowconfigure(0, weight=1)
+
+        for i, w in enumerate(Var.navFrameWeight):
+            self.grid_columnconfigure(
+                i,
+                weight=w,
+                uniform="navGroup",
+            )
 
 
 class PatientInfoFrame(tk.Frame):
@@ -104,9 +121,16 @@ class PatientInfoFrame(tk.Frame):
         super().__init__(
             parent,
         )
-        self.pack(
-            fill=tk.BOTH,
-            expand=True,
+        # self.pack(
+        #     fill=tk.BOTH,
+        #     expand=True,
+        # )
+        self.grid(
+            row=0,
+            column=2,
+            sticky="nsew",
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
 
         weightList = [15, 15, 1, 1, 1, 15, 1, 4]
@@ -182,27 +206,48 @@ class ContentFrame(tk.Frame):
             parent,
             bg=Color.contentFrameBG,
         )
-        self.pack(
-            side="top",
-            expand=True,
-            fill="both",
+        # self.pack(
+        #     side="top",
+        #     expand=True,
+        #     fill="both",
+        # )
+        self.grid(
+            row=1,
+            column=0,
+            sticky="nsew",
+            # padx=Var.miniPadding,
+            # pady=Var.miniPadding,
         )
+
+        configFrame = GraphConfigFrame(self)
 
         canvasFrame = CanvasFrame(
             self,
             patient_data=patient_data,
         )
 
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=10)
+
+        self.grid_columnconfigure(0, weight=1)
+
 
 class GraphConfigFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(
             parent,
-            padx=Var.padding,
-            pady=Var.padding,
+            # padx=Var.padding,
+            # pady=Var.padding,
             bg=Color.configFrameBG,
         )
-        self.pack(side="top", fill="x")
+        # self.pack(side="top", fill="x")
+        self.grid(
+            row=0,
+            column=0,
+            sticky="nsew",
+            # padx=Var.miniPadding,
+            # pady=Var.miniPadding,
+        )
 
         buttonFrame = ConfigButtonFrame(self)
         confirmFrame = ConfirmFrame(self)
@@ -215,7 +260,14 @@ class CanvasFrame(tk.Frame):
         patient_data,
     ):
         super().__init__(parent)
-        self.pack()
+        # self.pack()
+        self.grid(
+            row=1,
+            column=0,
+            sticky="nsew",
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
+        )
 
         canvas = Canvas.CanvasGraph(
             self,

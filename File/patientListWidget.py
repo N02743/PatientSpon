@@ -45,7 +45,7 @@ class NavFrame(Frame.NavFrame):
     ):
         super().__init__(parent)
 
-        tk.Button(
+        button = tk.Button(
             self,
             text="X",
             font=Font.backButtom,
@@ -53,13 +53,30 @@ class NavFrame(Frame.NavFrame):
             background=Color.backButtomBG,
             width=Var.backButtomWidth,
             command=lambda: onClosing(),
-        ).pack(
-            side="left",
-            fill=tk.Y,
+        )
+        # button.pack(
+        #     side="left",
+        #     fill=tk.Y,
+        # )
+        button.grid(
+            row=0,
+            column=0,
+            sticky="nsew",
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
 
         banner = Frame.BannerFrame(self)
         filter = FiltersFrame(self)
+
+        self.grid_rowconfigure(0, weight=1)
+
+        for i, w in enumerate(Var.navFrameWeight):
+            self.grid_columnconfigure(
+                i,
+                weight=w,
+                uniform="navGroup",
+            )
 
 
 # TODO: Remove duplicate PatientFrame
@@ -68,9 +85,16 @@ class FiltersFrame(tk.Frame):
         super().__init__(
             parent,
         )
-        self.pack(
-            fill=tk.BOTH,
-            expand=True,
+        # self.pack(
+        #     fill=tk.BOTH,
+        #     expand=True,
+        # )
+        self.grid(
+            row=0,
+            column=2,
+            sticky="nsew",
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
 
         weightList = [15, 15, 1, 1, 15]
@@ -152,15 +176,22 @@ class ContentFrame(tk.Frame):
         graph_page,
     ):
         super().__init__(parent)
-        self.pack(
-            fill=tk.BOTH,
-            expand=True,
-            padx=50,
-            pady=30,
+        # self.pack(
+        #     fill=tk.BOTH,
+        #     expand=True,
+        #     padx=50,
+        #     pady=30,
+        # )
+        self.grid(
+            row=1,
+            column=0,
+            sticky="nsew",
+            padx=Var.miniPadding,
+            pady=Var.miniPadding,
         )
 
         header = HeaderFrame(self)
-        patientList = ListFrame(self, graph_page)
+        self.patientList = ListFrame(self, graph_page)
 
         buttom = ButtomFrame(self)
 
@@ -169,6 +200,9 @@ class ContentFrame(tk.Frame):
         self.grid_rowconfigure(2, weight=1)
 
         self.grid_columnconfigure(0, weight=1)
+
+    def unbindScroll(self):
+        self.patientList.unbindScroll()
 
 
 class HeaderFrame(tk.Frame):
@@ -236,24 +270,31 @@ class ListFrame(tk.Frame):
             pady=Var.miniPadding,
         )
 
-        canvas = tk.Canvas(self)
-        canvas.pack(
+        self.canvas = tk.Canvas(self)
+        self.canvas.pack(
             side=tk.LEFT,
             fill=tk.BOTH,
             expand=True,
         )
 
-        # TODO: scrollbar can scroll until the last item hit buttom and first item hit top
-        scrollbar = tk.Scrollbar(self, orient="vertical", command=canvas.yview)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        # TODO: scrollbar cannot scroll until the last item hit buttom and first item hit top
+        scrollbar = tk.Scrollbar(
+            self,
+            orient="vertical",
+            command=self.canvas.yview,
+        )
+        scrollbar.pack(
+            side=tk.RIGHT,
+            fill=tk.Y,
+        )
 
-        canvas.configure(yscrollcommand=scrollbar.set)
+        self.canvas.configure(yscrollcommand=scrollbar.set)
 
         self.inner_frame = tk.Frame(
-            canvas,
+            self.canvas,
             bg=Color.patientListInnerFrameBG,
         )
-        window_id = canvas.create_window(
+        window_id = self.canvas.create_window(
             (0, 0),
             window=self.inner_frame,
             anchor="nw",
@@ -262,19 +303,29 @@ class ListFrame(tk.Frame):
         self.inner_frame.grid_columnconfigure(0, weight=1)
 
         def resize_inner(event):
-            canvas.itemconfig(window_id, width=event.width)
+            self.canvas.itemconfig(window_id, width=event.width)
 
-        canvas.bind("<Configure>", resize_inner)
-
-        def on_frame_configure(event):
-            canvas.configure(scrollregion=canvas.bbox("all"))
-
-        self.inner_frame.bind("<Configure>", on_frame_configure)
+        self.canvas.bind("<Configure>", resize_inner)
 
         def _on_mousewheel(event):
-            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+            self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
-        canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        def on_frame_configure(event):
+            self.canvas.update_idletasks()
+
+            bbox = self.canvas.bbox("all")
+            if bbox:
+                self.canvas.configure(scrollregion=bbox)
+
+                needs_scroll = bbox[3] > self.canvas.winfo_height()
+                if needs_scroll:
+                    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+                    self.canvas.bind_all("<MouseWheel>", _on_mousewheel)
+                else:
+                    scrollbar.pack_forget()
+                    self.canvas.unbind_all("<MouseWheel>")
+
+        self.inner_frame.bind("<Configure>", on_frame_configure)
 
         self.patientListData = get.get_patient_list()
 
@@ -340,6 +391,9 @@ class ListFrame(tk.Frame):
             self.grid_rowconfigure(row, weight=1)
 
         self.grid_columnconfigure(0, weight=1)
+
+    def unbindScroll(self):
+        self.canvas.unbind_all("<MouseWheel>")
 
 
 class ButtomFrame(tk.Frame):

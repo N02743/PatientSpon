@@ -4,20 +4,37 @@ from tkinter import messagebox
 from Var import Font, Global, Var
 from Var.Color import Color
 
-from File import Class
+from File import Class, Modal
 
 from Data import getData as get
 
 import datetime as dt
 
 
-def showImageModal(i):
+def showImageModal(parent, HN, date):
     # TODO: show Image modal
-    pictureDirectory = "Data/Image"
-    messagebox.showinfo(
-        "Image",
-        f"Show image for {i}",
+    # messagebox.showinfo(
+    #     "Image",
+    #     f"Show image for HN{HN}, {date}",
+    # )
+    print(f"Show image for HN{HN}, {date}")
+
+    imagePaths = get.get_image_paths_by_HN_and_Date(
+        HN=HN,
+        Date_str=date,
     )
+
+    imagePathsIsNone = imagePaths == []
+    if imagePathsIsNone:
+        messagebox.showinfo(
+            "Error",
+            "No image",
+        )
+    else:
+        Modal.ImageModal(
+            parent=parent,
+            imagePaths=imagePaths,
+        )
 
 
 class CanvasGraph(tk.Canvas):
@@ -29,17 +46,15 @@ class CanvasGraph(tk.Canvas):
         super().__init__(parent, bg=Color.canvasBG)
         self.pack()
 
+        self.HN = patient_data.HN
         self.patient_data = patient_data
 
         # TODO: auto set date
         now = dt.datetime.now()
         before = now - dt.timedelta(days=Global.maxDayShowInCanvas)
+
         now = f"{now:%d/%m/%Y}"
         before = f"{before:%d/%m/%Y}"
-        # print(f"Now: {now}, {before}")
-
-        # self.startDate = "01/03/2025"
-        # self.endDate = "18/03/2025"
 
         self.startDate = before
         self.endDate = now
@@ -67,12 +82,12 @@ class CanvasGraph(tk.Canvas):
         )
 
         self.lab_results = get.get_labResults_data_by_HN(
-            HN=self.patient_data.HN,
+            HN=self.HN,
             start=self.startDate,
             end=self.endDate,
         )
         self.medicine_usage = get.get_medicineUsage_data_by_HN(
-            HN=self.patient_data.HN,
+            HN=self.HN,
             start=self.startDate,
             end=self.endDate,
         )
@@ -100,13 +115,22 @@ class CanvasGraph(tk.Canvas):
 
     def createImageButton(self):
         iterDate = self.startDate
+
         for i in range(len(self.date_range)):
+            if get.if_no_image_for_button(self.HN, iterDate):
+                iterDate = get.nextDay(iterDate)
+                continue
+
             x = self.day_x(i)
             y = self.row_y(self.row_idx)
             btn = tk.Button(
                 self,
                 text="📷",
-                command=lambda date=iterDate: showImageModal(date),
+                command=lambda date=iterDate: showImageModal(
+                    parent=self,
+                    HN=self.HN,
+                    date=date,
+                ),
                 width=Var.imageShowWidth,
             )
             self.create_window(x, y + 25, window=btn)

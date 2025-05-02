@@ -3,6 +3,11 @@ import pandas as pd
 from File import Class
 from Var import Var as Var
 
+from datetime import datetime
+from pathlib import Path
+
+import re
+
 # patientDataFilePath = "Data/PatientData.csv"
 patientDataFilePath = "Data/PatientData50.csv"
 # labResultFilePath = "Data/mock_lab_results.csv"
@@ -141,3 +146,54 @@ def get_medicineUsage_data_by_HN(HN, start, end):
         medicineDict[med] = {"start": startDate, "end": endDate}
 
     return medicineDict
+
+
+def get_image_paths_by_HN_and_Date(HN, Date_str):
+    # TODO: Try except?
+    dateCheck = datetime.strptime(Date_str, r"%d/%m/%Y").date()
+
+    path = "Data/Image/PatientImage"
+    dirPath = Path(path) / str(HN)
+
+    # print(dirPath.resolve())
+
+    if not dirPath.exists():
+        # print("Not exists")
+        # TODO:
+        return []
+
+    imagePathList = []
+    for file in dirPath.glob("*.jpg"):
+        dateNow = datetime.strptime(file.stem, r"%Y-%m-%d_%H-%M-%S").date()
+        if dateNow == dateCheck:
+            imagePathList.append(file)
+
+    imagePathList = sorted(imagePathList)
+
+    # print("Can return:", imagePathList)
+    return imagePathList
+
+
+def if_no_image_for_button(HN, Date) -> bool:
+    Date = datetime.strptime(Date, "%d/%m/%Y").date()
+    date_str = Date.strftime("%Y-%m-%d")
+
+    pattern = re.compile(rf"^{date_str}_\d{{2}}-\d{{2}}-\d{{2}}\.jpg$")
+
+    path = "Data/Image/PatientImage"
+    dirPath = Path(path) / str(HN)
+
+    # print(HN, Date)
+
+    if not dirPath.exists():
+        # print("Not exists")
+        return True
+
+    for file in dirPath.glob("*.jpg"):
+        # print(file.name)
+        if pattern.match(file.name):
+            # print("match", file.name)
+            return False
+
+    # print("No Image")
+    return True

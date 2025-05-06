@@ -9,6 +9,8 @@ from File import Widget, Canvas, Frame
 
 from File import GlobalFunction as GLBFunc
 
+from tkcalendar import Calendar, DateEntry
+
 
 def addNewLabTest():
     # TODO:
@@ -37,11 +39,58 @@ def configTimeTick():
     print("Config Time Tick")
 
 
-def selectDate():
-    messagebox.showinfo(
-        "Select Date range",
-        "text field for Select Date range",
-    )
+def selectDate(parent):
+    datePicker = tk.Toplevel(parent)
+    datePicker.title("Date Picker")
+
+    datePicker.grab_set()
+
+    tk.Label(datePicker, text="Start Date:").grid(row=0, column=0, padx=5, pady=5)
+    start_date = DateEntry(datePicker, width=12, date_pattern="yyyy-mm-dd")
+    start_date.grid(row=0, column=1, padx=5, pady=5)
+
+    tk.Label(datePicker, text="End Date:").grid(row=1, column=0, padx=5, pady=5)
+    end_date = DateEntry(datePicker, width=12, date_pattern="yyyy-mm-dd")
+    end_date.grid(row=1, column=1, padx=5, pady=5)
+
+    # calendar = Calendar(
+    #     datePicker,
+    #     selectmode="day",
+    #     date_pattern="dd/mm/yyyy",
+    #     showweeknumbers=False,
+    # )
+    # calendar.pack(pady=10)
+
+    # def printTest(isStart: bool):
+    #     date = calendar.get_date()
+    #     print(date, isStart)
+    #     datePicker.destroy()
+
+    # frame = tk.Frame(datePicker)
+    # frame.pack()
+
+    # startButton = tk.Button(
+    #     datePicker,
+    #     text="Start Date",
+    #     command=printTest(isStart=True),
+    # )
+    # startButton.pack(
+    #     side="left",
+    #     padx=10,
+    #     pady=10,
+    # )
+
+    # endButton = tk.Button(
+    #     datePicker,
+    #     text="End Date",
+    #     command=printTest(isStart=False),
+    # )
+    # endButton.pack(
+    #     side="right",
+    #     padx=10,
+    #     pady=10,
+    # )
+
     print("Config Time Tick")
 
 
@@ -99,10 +148,6 @@ class NavFrame(Frame.NavFrame):
             width=Var.backButtomWidth,
             command=lambda: patient_page(),
         )
-        # button.pack(
-        #     side="left",
-        #     fill=tk.Y,
-        # )
         button.grid(
             row=0,
             column=0,
@@ -226,6 +271,7 @@ class ContentFrame(tk.Frame):
             # padx=Var.miniPadding,
             # pady=Var.miniPadding,
         )
+        self.grid_propagate(False)
 
         configFrame = GraphConfigFrame(self)
 
@@ -244,18 +290,14 @@ class GraphConfigFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(
             parent,
-            # padx=Var.padding,
-            # pady=Var.padding,
             bg=Color.configFrameBG,
         )
-        # self.pack(side="top", fill="x")
         self.grid(
             row=0,
             column=0,
             sticky="nsew",
-            # padx=Var.miniPadding,
-            # pady=Var.miniPadding,
         )
+        self.grid_propagate(False)
 
         buttonFrame = ConfigButtonFrame(self)
         confirmFrame = ConfirmFrame(self)
@@ -276,6 +318,7 @@ class CanvasFrame(tk.Frame):
             padx=Var.miniPadding,
             pady=Var.miniPadding,
         )
+        self.grid_propagate(False)
 
         canvas = Canvas.CanvasGraph(
             self,
@@ -292,8 +335,6 @@ class ConfigButtonFrame(tk.Frame):
             background=Color.configFrameBG,
         )
         self.pack(side="left")
-
-        # TODO: Add choose date to show
 
         global showLabButton
         showLabButton = Widget.ToggleButton(
@@ -333,10 +374,11 @@ class ConfigButtonFrame(tk.Frame):
             var=Global.showGrid,
         )
 
+        global selectDateButton
         selectDateButton = Widget.ConfigButton(
             self,
             text="Select date",
-            command=lambda: selectDate(),
+            command=lambda: selectDate(self),
         )
 
 

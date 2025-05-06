@@ -66,10 +66,6 @@ class NavFrame(tk.Frame):
             bg=Color.navFrameBG,
             height=Var.navFrame_height,
         )
-        # self.pack(
-        #     side="top",
-        #     fill="x",
-        # )
         self.grid(
             row=0,
             column=0,
@@ -77,7 +73,6 @@ class NavFrame(tk.Frame):
             padx=Var.miniPadding,
             pady=Var.miniPadding,
         )
-        self.pack_propagate(False)
 
 
 class PatientRowFrame(tk.Frame):

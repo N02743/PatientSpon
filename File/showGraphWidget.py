@@ -6,8 +6,9 @@ from Var.Color import Color
 
 from File import Widget, Canvas, Frame
 
-
 from File import GlobalFunction as GLBFunc
+
+from tkcalendar import DateEntry
 
 
 def addNewLabTest():
@@ -37,11 +38,62 @@ def configTimeTick():
     print("Config Time Tick")
 
 
-def selectDate():
-    messagebox.showinfo(
-        "Select Date range",
-        "text field for Select Date range",
-    )
+def selectDate(parent):
+    datePicker = tk.Toplevel(parent)
+    datePicker.title("Date Picker")
+
+    datePicker.grab_set()
+
+    tk.Label(datePicker, text="Start Date:").grid(row=0, column=0, padx=5, pady=5)
+    start_date = DateEntry(datePicker, width=12, date_pattern="yyyy-mm-dd")
+    start_date.grid(row=0, column=1, padx=5, pady=5)
+
+    tk.Label(datePicker, text="End Date:").grid(row=1, column=0, padx=5, pady=5)
+    end_date = DateEntry(datePicker, width=12, date_pattern="yyyy-mm-dd")
+    end_date.grid(row=1, column=1, padx=5, pady=5)
+
+    # calendar = Calendar(
+    #     datePicker,
+    #     selectmode="day",
+    #     date_pattern="dd/mm/yyyy",
+    #     showweeknumbers=False,
+    # )
+    # calendar.pack(pady=10)
+
+    # def printTest(isStart: bool):
+    #     date = calendar.get_date()
+    #     print(date, isStart)
+    #     datePicker.destroy()
+
+    # frame = tk.Frame(datePicker)
+    # frame.pack()
+
+    # startButton = tk.Button(
+    #     datePicker,
+    #     text="Start Date",
+    #     command=printTest(isStart=True),
+    # )
+    # startButton.pack(
+    #     side="left",
+    #     padx=10,
+    #     pady=10,
+    # )
+
+    # endButton = tk.Button(
+    #     datePicker,
+    #     text="End Date",
+    #     command=printTest(isStart=False),
+    # )
+    # endButton.pack(
+    #     side="right",
+    #     padx=10,
+    #     pady=10,
+    # )
+
+    # messagebox.showinfo(
+    #     "Select Date range",
+    #     "text field for Select Date range",
+    # )
     print("Config Time Tick")
 
 
@@ -336,7 +388,7 @@ class ConfigButtonFrame(tk.Frame):
         selectDateButton = Widget.ConfigButton(
             self,
             text="Select date",
-            command=lambda: selectDate(),
+            command=lambda: selectDate(self),
         )
 
 

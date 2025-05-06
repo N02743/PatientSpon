@@ -45,7 +45,6 @@ class CanvasGraph(tk.Canvas):
     ):
         super().__init__(parent, bg=Color.canvasBG)
         self.pack()
-        self.pack_propagate(False)
 
         self.HN = patient_data.HN
         self.patient_data = patient_data

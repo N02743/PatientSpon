@@ -189,7 +189,6 @@ class ContentFrame(tk.Frame):
             padx=Var.miniPadding,
             pady=Var.miniPadding,
         )
-        self.grid_propagate(False)
 
         header = HeaderFrame(self)
         self.patientList = ListFrame(self, graph_page)
